@@ -387,3 +387,65 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* Santos7 Sport direction: bold, fast and product-led. */
+:root { --black: #050505; --ink: #111111; --paper: #fff; --soft: #f2f2f2; --gray: #e5e5e5; --muted: #707070; --line: #d8d8d8; --red: #f23822; --acid: #fff; }
+body { letter-spacing: -.01em; }
+.utility-bar { background: #050505; font-size: 8px; min-height: 30px; }
+.utility-bar > span:first-child, .utility-bar a b { color: var(--paper); }
+.site-header { background: rgba(255,255,255,.98); min-height: 72px; }
+.brand-logo { height: 58px; width: 142px; }
+.main-nav a, .header-contact, .cart-trigger { font-size: 10px; letter-spacing: .07em; text-transform: uppercase; }
+.header-contact { border: 0; padding: 0; }
+.cart-count { background: var(--red); }
+.hero { background: #050505; min-height: min(790px, calc(100vh - 102px)); overflow: hidden; padding: 18px 6vw 28px; position: relative; }
+.hero::before { color: rgba(255,255,255,.035); content: "S7"; font-family: "Space Grotesk", sans-serif; font-size: min(38vw, 510px); font-weight: 700; letter-spacing: -.16em; line-height: .75; position: absolute; right: 5vw; top: 14%; }
+.hero-grid, .hero-topline, .hero-bottomline { position: relative; z-index: 1; }
+.hero-grid { gap: 4vw; grid-template-columns: .96fr 1.04fr; }
+.hero h1 { font-size: clamp(70px, 9.2vw, 148px); font-weight: 700; letter-spacing: -.105em; line-height: .76; text-transform: uppercase; }
+.hero h1 em { color: var(--red); font-style: italic; font-weight: 700; }
+.hero h1 strong { font-weight: 700; }
+.hero-description { color: #c9c9c9; font-size: 15px; max-width: 405px; }
+.button { border-radius: 999px; font-size: 10px; letter-spacing: .08em; min-height: 52px; padding: 0 24px; text-transform: uppercase; }
+.button-acid { background: var(--paper); color: var(--black); }
+.button-acid:hover { background: var(--red); box-shadow: none; color: var(--paper); }
+.button-dark { border: 1px solid var(--black); border-radius: 0; }
+.hero-text-link { color: var(--paper); letter-spacing: .06em; text-transform: uppercase; }
+.hero-text-link span { color: var(--red); }
+.hero-trust { border-color: #393939; }
+.hero-main-photo { border-radius: 2px; right: 3%; transform: none; width: 81%; }
+.hero-main-photo::after { border-color: rgba(255,255,255,.65); }
+.photo-code { color: var(--paper); }
+.photo-price { background: var(--red); border-radius: 0; color: var(--paper); transform: rotate(-7deg); }
+.hero-small-top { transform: rotate(-3deg); }
+.hero-small-bottom { transform: rotate(4deg); }
+.hero-deal { border-left: 5px solid var(--red); left: -2%; }
+.deal-label { color: var(--red); }
+.marquee { background: var(--red); }
+.marquee-track b { color: var(--paper); }
+.benefits { margin: 0 6vw; }
+.benefits b, .today-copy .eyebrow, .club-section .eyebrow { color: var(--red); }
+.category-section, .shop-section { padding-left: 6vw; padding-right: 6vw; }
+.section-intro h2, .shop-heading h2, .today-copy h2, .service-intro h2, .story-copy h2, .club-section h2 { font-weight: 700; letter-spacing: -.1em; text-transform: uppercase; }
+.category-tile { height: 440px; }
+.category-tile:first-child { grid-column: span 2; }
+.category-tile:first-child .tile-copy h3 { font-size: 62px; }
+.tile-arrow { border-radius: 0; }
+.today-deal { background: #e9e9e9; gap: 7vw; padding-left: 6vw; padding-right: 6vw; }
+.shop-section { padding-top: clamp(100px, 13vw, 175px); }
+.catalog-toolbar { border-color: var(--ink); }
+.filter-button { border: 1px solid transparent; border-radius: 999px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.filter-button:hover, .filter-button.is-active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.product-grid { gap: 44px 16px; }
+.product-image::after { display: none; }
+.product-tag { background: var(--paper); color: var(--ink); left: 12px; top: 12px; }
+.product-tag.tag-sale { background: var(--red); color: var(--paper); }
+.favorite-button { border-radius: 0; right: 12px; top: 12px; }
+.product-info h3 { font-size: 17px; font-weight: 700; text-transform: uppercase; }
+.product-price { font-size: 13px; }
+.add-button { font-size: 10px; letter-spacing: .06em; }
+.add-button span { color: var(--red); }
+.service-section { margin-top: clamp(100px, 13vw, 175px); padding-left: 6vw; padding-right: 6vw; }
+.service-main-card { background: var(--red); }
+.whatsapp-float { background: var(--black); border: 2px solid var(--paper); }
+@media (max-width: 760px) { .hero { padding-left: 18px; padding-right: 18px; } .hero::before { font-size: 70vw; right: 11vw; top: 42%; } .hero h1 { font-size: clamp(65px, 18vw, 105px); } .category-section, .shop-section, .today-deal, .service-section { padding-left: 18px; padding-right: 18px; } .category-tile:first-child { grid-column: auto; } .category-tile:first-child .tile-copy h3 { font-size: 42px; } .button { min-height: 48px; } }
