@@ -27,6 +27,7 @@ button { border: 0; cursor: pointer; }
 .site-header { align-items: center; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; min-height: 78px; padding: 0 4.5vw; }
 
 .brand { align-items: center; display: inline-flex; gap: 10px; }
+.brand-logo { display: block; height: 58px; mix-blend-mode: multiply; object-fit: cover; object-position: center; width: 138px; }
 .brand-mark { align-items: center; background: var(--lime); border-radius: 50%; display: inline-flex; font-family: "Space Grotesk", sans-serif; font-size: 11px; font-weight: 700; height: 34px; justify-content: center; letter-spacing: -.08em; width: 34px; }
 .brand-name { font-family: "Space Grotesk", sans-serif; font-size: 17px; font-weight: 700; letter-spacing: -.04em; line-height: .85; }
 .brand-name small { display: block; font-family: "DM Sans", sans-serif; font-size: 7px; font-weight: 700; letter-spacing: .27em; margin: 4px 0 0 1px; }
@@ -163,6 +164,7 @@ button { border: 0; cursor: pointer; }
 
 .site-footer { align-items: center; display: grid; gap: 20px; grid-template-columns: 1fr auto 1fr auto; padding: 30px 4.5vw; }
 .footer-brand .brand-mark { height: 28px; width: 28px; }
+.footer-brand .brand-logo { height: 48px; width: 115px; }
 .footer-brand .brand-name { font-size: 14px; }
 .site-footer > p, .footer-copy { color: var(--muted); font-size: 10px; }
 .footer-links { display: flex; gap: 22px; justify-self: center; }
