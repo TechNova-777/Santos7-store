@@ -198,9 +198,9 @@ button { border: 0; cursor: pointer; }
 .cart-summary strong { font-family: "Space Grotesk", sans-serif; font-size: 21px; }
 .cart-shipping { color: var(--muted); font-size: 10px; margin: 8px 0 18px; }
 .checkout-button { justify-content: space-between; width: 100%; }
-.whatsapp-float { align-items: center; background: #25d366; bottom: 22px; box-shadow: 0 10px 25px rgba(37,211,102,.25); color: #092e18; display: flex; font-size: 11px; font-weight: 700; gap: 8px; padding: 11px 14px 11px 10px; position: fixed; right: 22px; transition: box-shadow .2s ease, transform .2s ease; z-index: 25; }
+.whatsapp-float { align-items: center; background: #25d366; border-radius: 50%; bottom: 22px; box-shadow: 0 10px 25px rgba(37,211,102,.3); color: #fff; display: flex; height: 58px; justify-content: center; position: fixed; right: 22px; transition: box-shadow .2s ease, transform .2s ease; width: 58px; z-index: 25; }
 .whatsapp-float:hover { box-shadow: 0 13px 30px rgba(37,211,102,.4); transform: translateY(-3px); }
-.whatsapp-symbol { align-items: center; border: 1px solid rgba(9,46,24,.6); border-radius: 50%; display: inline-flex; font-size: 8px; height: 24px; justify-content: center; width: 24px; }
+.whatsapp-icon { fill: currentColor; height: 31px; width: 31px; }
 .toast { background: var(--ink); bottom: 25px; color: var(--paper); font-size: 12px; left: 50%; max-width: calc(100% - 30px); opacity: 0; padding: 13px 18px; pointer-events: none; position: fixed; transform: translate(-50%, 15px); transition: opacity .25s ease, transform .25s ease; z-index: 50; }
 .toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
 
