@@ -3,190 +3,92 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Santos Store: zapatillas con actitud para moverte a tu manera.">
-  <title>Santos Store | Zapatillas con actitud</title>
+  <meta name="description" content="Santos7 Store: calzado, ropa y accesorios originales por mayor y unidad.">
+  <title>Santos7 Store | Originales, mayor y unidad</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="announcement">
-    <p>Envíos a todo el Perú <span>·</span> delivery gratis desde S/ 399</p>
-    <a href="#club">Únete al club Santos <span>↗</span></a>
+  <div class="utility-bar">
+    <span>ENVÍOS A TODO EL PERÚ</span>
+    <span>100% ORIGINAL</span>
+    <a href="https://wa.me/51906470711?text=Hola%20Santos7%20Store%2C%20quiero%20consultar%20por%20un%20producto." target="_blank" rel="noopener">WHATSAPP <b>+51 906 470 711 ↗</b></a>
   </div>
 
   <div class="site-shell">
     <header class="site-header">
-      <a href="#inicio" class="brand" aria-label="Santos Store, inicio">
-        <img class="brand-logo" src="assets/santos7-logo.jpeg" alt="Santos7 Store">
-      </a>
-
+      <a href="#inicio" class="brand" aria-label="Santos7 Store, inicio"><img class="brand-logo" src="assets/santos7-logo.jpeg" alt="Santos7 Store"></a>
       <nav class="main-nav" id="mainNav" aria-label="Navegación principal">
-        <a href="#zapatillas">Zapatillas</a>
-        <a href="#colecciones">Colecciones</a>
-        <a href="#nosotros">Nuestra historia</a>
+        <a href="#catalogo">Novedades</a>
+        <a href="#colecciones">Categorías</a>
+        <a href="#compras">Cómo comprar</a>
+        <a href="#nosotros">Nosotros</a>
       </nav>
-
       <div class="header-actions">
-        <button class="header-icon search-trigger" type="button" aria-label="Buscar zapatillas" title="Buscar">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 5 5"></path></svg>
-        </button>
-        <button class="cart-trigger" id="cartTrigger" type="button" aria-label="Abrir carrito">
-          <span>Carrito</span>
-          <span class="cart-count" id="cartCount">0</span>
-        </button>
-        <button class="header-icon menu-trigger" id="menuTrigger" type="button" aria-label="Abrir menú" aria-expanded="false">
-          <span></span><span></span>
-        </button>
+        <a class="header-contact" href="https://wa.me/51906470711?text=Hola%20Santos7%20Store%2C%20quiero%20consultar%20por%20un%20producto." target="_blank" rel="noopener">Escríbenos <span>↗</span></a>
+        <button class="header-icon search-trigger" type="button" aria-label="Buscar en el catálogo" title="Buscar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 5 5"></path></svg></button>
+        <button class="cart-trigger" id="cartTrigger" type="button" aria-label="Abrir bolsa" aria-controls="cartDrawer" aria-expanded="false"><span>Bolsa</span><strong class="cart-count" id="cartCount">0</strong></button>
+        <button class="header-icon menu-trigger" id="menuTrigger" type="button" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span></button>
       </div>
     </header>
 
     <main>
       <section class="hero" id="inicio">
-        <div class="hero-copy">
-          <p class="eyebrow"><span class="eyebrow-dot"></span> Drop 01 / 2025</p>
-          <h1>Camina<br><em>a tu</em> <strong>manera.</strong></h1>
-          <p class="hero-description">Zapatillas elegidas para quienes no esperan a que llegue el momento. Diseño, comodidad y personalidad en cada paso.</p>
-          <div class="hero-actions">
-            <a class="button button-dark" href="#zapatillas">Ver colección <span>↗</span></a>
-            <a class="text-link" href="#nosotros">Conoce Santos <span>→</span></a>
+        <div class="hero-topline"><span>SANTOS7 / SELECTED GOODS</span><span>LIMA, PE <i>•</i> 2025</span></div>
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-mark"></span> Calzado · ropa · accesorios</p>
+            <h1>Marcas<br><em>originales.</em><br><strong>Precio real.</strong></h1>
+            <p class="hero-description">Elige tu próximo par, arma tu look y compra como prefieras: por mayor o por unidad. Stock real, tallas claras y atención directa.</p>
+            <div class="hero-actions"><a class="button button-acid" href="#catalogo">Ver novedades <span>↓</span></a><a class="hero-text-link" href="https://wa.me/51906470711?text=Hola%20Santos7%20Store%2C%20quiero%20consultar%20por%20un%20producto." target="_blank" rel="noopener">Comprar por WhatsApp <span>↗</span></a></div>
+            <div class="hero-trust"><span><b>01</b> Todo original</span><span><b>02</b> Mayor y unidad</span><span><b>03</b> Entrega y Shalom</span></div>
           </div>
-          <div class="hero-details">
-            <div><strong>+2.000</strong><span>pares entregados</span></div>
-            <div><strong>4.9/5</strong><span>opiniones reales</span></div>
-            <div><strong>48 h</strong><span>envío a Lima</span></div>
+          <div class="hero-collage" aria-label="Productos destacados Santos7">
+            <div class="hero-main-photo"><img src="assets/nike-air-max-sc.jpeg" alt="Nike Air Max SC"><span class="photo-code">SS / 010<br>ORIGINAL</span><span class="photo-price">S/ 239</span></div>
+            <div class="hero-small-photo hero-small-top"><img src="assets/polo-jordan.jpeg" alt="Polo Jordan"><span>ROPA<br>DROP</span></div>
+            <div class="hero-small-photo hero-small-bottom"><img src="assets/gorra-nike.jpeg" alt="Gorra Nike"><span>ACCESORIOS<br>NOW</span></div>
+            <div class="hero-deal"><span class="deal-label">OFERTA DE HOY</span><strong>S/ 40</strong><span>Sandalia Kappa<br>tallas 43 · 44 · 45</span><a href="#catalogo" data-category-link="calzado">Ver oferta ↗</a></div>
           </div>
         </div>
+        <div class="hero-bottomline"><span>Scroll para comprar</span><span class="hero-rule"></span><span>Originals only</span></div>
+      </section>
 
-        <div class="hero-visual" aria-label="Nueva colección Santos">
-          <div class="visual-label visual-label-top">Hechas para moverte</div>
-          <div class="hero-image-wrap">
-            <div class="hero-sun"></div>
-            <div class="hero-grid-lines"></div>
-            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=85" alt="Zapatilla Santos roja sobre fondo claro">
-            <span class="image-sticker">S/ 349</span>
-          </div>
-          <div class="visual-label visual-label-bottom"><span>01</span> Santos R1 / Solar</div>
-          <div class="hero-side-note">Scroll para<br>descubrir <span>↓</span></div>
+      <section class="marquee" aria-label="Beneficios Santos7"><div class="marquee-track"><span>Stock real</span><b>✳</b><span>Todo original</span><b>✳</b><span>Separa desde S/ 10</span><b>✳</b><span>Mayor y unidad</span><b>✳</b><span>Stock real</span><b>✳</b><span>Todo original</span><b>✳</b></div></section>
+
+      <section class="benefits"><div><b>01</b><strong>Compra fácil</strong><span>Escríbenos y coordinamos tu pedido</span></div><div><b>02</b><strong>Pago seguro</strong><span>Yape · 906 470 711</span></div><div><b>03</b><strong>Entrega flexible</strong><span>Estaciones de tren o Shalom</span></div><div><b>04</b><strong>Stock original</strong><span>Marcas que sí conoces</span></div></section>
+
+      <section class="category-section" id="colecciones">
+        <div class="section-intro"><div><p class="eyebrow">01 / Compra por categoría</p><h2>Encuentra<br>tu <em>mood.</em></h2></div><p>Tres entradas. Un solo objetivo: que encuentres algo que quieras usar hoy.</p></div>
+        <div class="category-grid">
+          <a class="category-tile tile-footwear" href="#catalogo" data-category-link="calzado"><img src="assets/puma-court-classic-plataforma.jpeg" alt="Calzado Puma"><div class="tile-shade"></div><span class="tile-number">01</span><div class="tile-copy"><small>Zapatillas + sandalias</small><h3>Calzado</h3></div><span class="tile-arrow">↗</span></a>
+          <a class="category-tile tile-clothes" href="#catalogo" data-category-link="ropa"><img src="assets/polo-nike.jpeg" alt="Ropa Nike"><div class="tile-shade"></div><span class="tile-number">02</span><div class="tile-copy"><small>Polos + camisero</small><h3>Ropa</h3></div><span class="tile-arrow">↗</span></a>
+          <a class="category-tile tile-accessories" href="#catalogo" data-category-link="accesorios"><img src="assets/gorra-guess.jpeg" alt="Gorra Guess"><div class="tile-shade"></div><span class="tile-number">03</span><div class="tile-copy"><small>Gorras + más</small><h3>Accesorios</h3></div><span class="tile-arrow">↗</span></a>
         </div>
       </section>
 
-      <section class="ticker" aria-label="Santos Store destacados">
-        <div class="ticker-track">
-          <span>Hecho para tu ritmo</span><b>✳</b><span>Diseño que se nota</span><b>✳</b><span>Tu siguiente paso</span><b>✳</b><span>Hecho para tu ritmo</span><b>✳</b><span>Diseño que se nota</span><b>✳</b>
-        </div>
-      </section>
+      <section class="today-deal"><div class="today-image"><img src="assets/sandalia-kappa.jpeg" alt="Sandalia Kappa en oferta"><span>DROP / 001</span></div><div class="today-copy"><p class="eyebrow">Oferta que no espera</p><h2>Sandalia<br><em>Kappa.</em></h2><div class="today-price"><strong>S/ 40</strong><span>Pago completo</span></div><p>Tallas 43 · 44 · 45. Solo por hoy. Si quieres separarla, escríbenos antes de que se vaya.</p><a class="button button-dark" href="https://wa.me/51906470711?text=Hola%20Santos7%20Store%2C%20quiero%20la%20Sandalia%20Kappa%20de%20S%2F%2040." target="_blank" rel="noopener">La quiero <span>↗</span></a></div></section>
 
-      <section class="collection-intro" id="colecciones">
-        <div>
-          <p class="eyebrow">Elige tu energía</p>
-          <h2>Un par para<br><em>cada versión</em> de ti.</h2>
-        </div>
-        <p class="section-note">No diseñamos para encajar. Diseñamos para que encuentres el par que se siente como tuyo.</p>
-      </section>
-
-      <section class="category-grid" aria-label="Explorar categorías">
-        <a class="category-card category-street" href="#zapatillas" data-category-link="calle">
-          <span class="category-number">01</span>
-          <div><p>Para todos los días</p><h3>Calle</h3></div>
-          <span class="category-arrow">↗</span>
-        </a>
-        <a class="category-card category-run" href="#zapatillas" data-category-link="correr">
-          <span class="category-number">02</span>
-          <div><p>Corre más ligero</p><h3>Run</h3></div>
-          <span class="category-arrow">↗</span>
-        </a>
-        <a class="category-card category-court" href="#zapatillas" data-category-link="basquet">
-          <span class="category-number">03</span>
-          <div><p>Domina la cancha</p><h3>Cancha</h3></div>
-          <span class="category-arrow">↗</span>
-        </a>
-      </section>
-
-      <section class="shop-section" id="zapatillas">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">La selección Santos</p>
-            <h2>Encuentra tu <em>par.</em></h2>
-          </div>
-          <span class="product-total" id="productTotal">06 modelos</span>
-        </div>
-
-        <div class="catalog-toolbar">
-          <div class="filter-list" role="group" aria-label="Filtrar por categoría">
-            <button type="button" class="filter-button is-active" data-filter="todos">Todos</button>
-            <button type="button" class="filter-button" data-filter="calle">Calle</button>
-            <button type="button" class="filter-button" data-filter="correr">Correr</button>
-            <button type="button" class="filter-button" data-filter="basquet">Cancha</button>
-          </div>
-          <label class="search-box">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 5 5"></path></svg>
-            <input id="catalogSearch" type="search" placeholder="Buscar modelo..." autocomplete="off">
-          </label>
-        </div>
-
+      <section class="shop-section" id="catalogo">
+        <div class="shop-heading"><div><p class="eyebrow">02 / Stock actual</p><h2>Lo que está<br><em>disponible.</em></h2></div><div class="shop-status"><span class="status-dot"></span><span id="productTotal" aria-live="polite">13 modelos</span><small>actualizado hoy</small></div></div>
+        <div class="catalog-toolbar"><div class="filter-list" role="group" aria-label="Filtrar catálogo"><button type="button" class="filter-button is-active" data-filter="todos">Ver todo</button><button type="button" class="filter-button" data-filter="calzado">Calzado</button><button type="button" class="filter-button" data-filter="ropa">Ropa</button><button type="button" class="filter-button" data-filter="accesorios">Accesorios</button></div><label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 5 5"></path></svg><input id="catalogSearch" type="search" placeholder="Buscar marca o modelo" aria-label="Buscar marca o modelo" autocomplete="off"></label></div>
         <div class="product-grid" id="productGrid"></div>
       </section>
 
-      <section class="story-section" id="nosotros">
-        <div class="story-photo">
-          <img src="https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=1000&q=85" alt="Zapatillas urbanas sobre una superficie naranja" loading="lazy">
-          <span class="photo-caption">Santos Studio<br>Lima, PE</span>
-        </div>
-        <div class="story-copy">
-          <p class="eyebrow">No es solo una zapatilla</p>
-          <h2>De aquí.<br><em>Para todos.</em></h2>
-          <p>Nacimos entre pistas, veredas y planes que cambian a última hora. Santos Store es una selección hecha en Lima para encontrar zapatillas que aguanten tu día y también digan algo de ti.</p>
-          <a class="button button-outline" href="#club">Saber más <span>↗</span></a>
-          <div class="story-signature"><span class="signature-line"></span><span>Equipo Santos</span></div>
-        </div>
-      </section>
+      <section class="service-section" id="compras"><div class="service-intro"><p class="eyebrow">03 / Cómo comprar</p><h2>Sin letras<br><em>pequeñas.</em></h2><p>Todo claro desde el primer mensaje. Elige, consulta y coordinamos.</p></div><div class="service-content"><div class="service-main-card"><span class="service-label">SANTOS7 / INFO</span><h3>Compra<br>con confianza.</h3><div class="service-main-footer"><span>Mayor / unidad</span><span>100% original</span></div></div><div class="service-list"><article class="service-row"><span>01</span><div><h3>Separa tu pedido</h3><p>Separaciones a partir de 3 días con un Yape de <strong>S/ 10</strong>.</p></div><b>↗</b></article><article class="service-row"><span>02</span><div><h3>Número de Yape</h3><p><strong>906 470 711</strong><br>Frits Santos Campos</p></div><b>↗</b></article><article class="service-row"><span>03</span><div><h3>Entrega en estaciones</h3><p>Previo separo S/ 10 + costo de entrega S/ 5.</p></div><b>↗</b></article><article class="service-row"><span>04</span><div><h3>Envíos por Shalom</h3><p>Cancelas completo tu pedido antes del envío.</p></div><b>↗</b></article></div></div></section>
 
-      <section class="club-section" id="club">
-        <div class="club-copy">
-          <p class="eyebrow">Santos Club</p>
-          <h2>El próximo drop<br>te encuentra <em>primero.</em></h2>
-        </div>
-        <form class="club-form" id="clubForm">
-          <label for="clubEmail">Tu correo</label>
-          <div class="club-input-row">
-            <input id="clubEmail" type="email" placeholder="hola@ejemplo.com" required>
-            <button type="submit" class="button button-lime">Unirme <span>↗</span></button>
-          </div>
-          <small>Sin spam. Solo lanzamientos, tallas y beneficios.</small>
-        </form>
-      </section>
+      <section class="story-section" id="nosotros"><div class="story-image"><img src="assets/camisero-puma-bmw.jpeg" alt="Camisero Puma BMW" loading="lazy"><span>STUDIO / 2025</span></div><div class="story-copy"><p class="eyebrow">04 / Santos7 Store</p><h2>No vendemos<br>lo <em>mismo.</em></h2><p>Buscamos piezas originales, marcas que reconoces y oportunidades que valen la pena. Desde Lima, para cualquier plan.</p><a class="text-button" href="#club">Conoce Santos7 <span>↗</span></a><div class="story-signature"><span></span><b>Santos7</b><small>Selected goods</small></div></div></section>
+
+      <section class="club-section" id="club"><div><p class="eyebrow">05 / Santos7 Mayorista</p><h2>¿Buscas<br>por <em>mayor?</em></h2></div><div class="club-actions"><p>Escríbenos para recibir stock, precios por volumen y opciones para tu negocio.</p><a class="button button-acid" href="https://wa.me/51906470711?text=Hola%20Santos7%20Store%2C%20quiero%20la%20lista%20mayorista." target="_blank" rel="noopener">Pedir lista mayorista <span>↗</span></a></div></section>
     </main>
 
-    <footer class="site-footer">
-      <a href="#inicio" class="brand footer-brand" aria-label="Volver al inicio">
-        <img class="brand-logo" src="assets/santos7-logo.jpeg" alt="Santos7 Store">
-      </a>
-      <p>Pasos con intención.</p>
-      <div class="footer-links"><a href="#zapatillas">Catálogo</a><a href="#nosotros">Nosotros</a><a class="footer-whatsapp" href="https://wa.me/51906470711?text=Hola%20Santos%20Store%2C%20quiero%20consultar%20por%20unas%20zapatillas." target="_blank" rel="noopener">WhatsApp <span>+51 906 470 711</span></a></div>
-      <span class="footer-copy">© 2025 Santos Store</span>
-    </footer>
+    <footer class="site-footer"><a href="#inicio" class="brand footer-brand" aria-label="Volver al inicio"><img class="brand-logo" src="assets/santos7-logo.jpeg" alt="Santos7 Store"></a><p>Pasos con intención.</p><div class="footer-links"><a href="#catalogo">Catálogo</a><a href="#compras">Cómo comprar</a><a href="#nosotros">Nosotros</a><a class="footer-whatsapp" href="https://wa.me/51906470711?text=Hola%20Santos7%20Store%2C%20quiero%20consultar%20por%20un%20producto." target="_blank" rel="noopener">WhatsApp <span>+51 906 470 711</span></a></div><span class="footer-copy">© 2025 Santos7 Store</span></footer>
   </div>
 
-  <div class="overlay" id="overlay"></div>
-  <aside class="cart-drawer" id="cartDrawer" aria-label="Carrito de compras" aria-hidden="true">
-    <div class="cart-head">
-      <div><p class="eyebrow">Tu selección</p><h2>Carrito <span id="cartHeadCount">(0)</span></h2></div>
-      <button class="close-button" id="cartClose" type="button" aria-label="Cerrar carrito">×</button>
-    </div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="cart-footer">
-      <div class="cart-summary"><span>Subtotal</span><strong id="cartSubtotal">S/ 0</strong></div>
-      <p class="cart-shipping">Envío calculado al confirmar el pedido.</p>
-      <button class="button button-dark checkout-button" id="checkoutButton" type="button">Continuar pedido <span>↗</span></button>
-    </div>
-  </aside>
-
-  <a class="whatsapp-float" href="https://wa.me/51906470711?text=Hola%20Santos%20Store%2C%20quiero%20consultar%20por%20unas%20zapatillas." target="_blank" rel="noopener" title="Escribir por WhatsApp" aria-label="Escribir por WhatsApp al +51 906 470 711">
-    <svg class="whatsapp-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.52 3.48A11.83 11.83 0 0 0 12.1 0C5.57 0 .26 5.31.26 11.84c0 2.09.55 4.13 1.6 5.93L.16 24l6.37-1.67a11.8 11.8 0 0 0 5.56 1.41h.01c6.52 0 11.83-5.31 11.83-11.84 0-3.16-1.23-6.13-3.41-8.42Zm-8.42 18.22h-.01a9.82 9.82 0 0 1-5-1.37l-.36-.21-3.78.99 1.01-3.69-.23-.38a9.82 9.82 0 0 1-1.51-5.2C2.22 6.42 6.65 2 12.1 2c2.64 0 5.12 1.03 6.98 2.9a9.82 9.82 0 0 1 2.9 6.99c0 5.42-4.43 9.81-9.88 9.81Zm5.4-7.35c-.3-.15-1.77-.87-2.05-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.27-.47-2.42-1.49-.9-.8-1.5-1.78-1.67-2.08-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.21 5.08 4.5.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35Z"></path></svg>
-  </a>
-
+  <div class="overlay" id="overlay"></div><aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-label="Bolsa de compras" aria-hidden="true"><div class="cart-head"><div><p class="eyebrow">Tu selección</p><h2 id="cartTitle">Bolsa <span id="cartHeadCount">(0)</span></h2></div><button class="close-button" id="cartClose" type="button" aria-label="Cerrar bolsa">×</button></div><div class="cart-items" id="cartItems"></div><div class="cart-footer"><div class="cart-summary"><span>Subtotal</span><strong id="cartSubtotal">S/ 0</strong></div><p class="cart-shipping">El pedido se coordina por WhatsApp.</p><button class="button button-dark checkout-button" id="checkoutButton" type="button">Pedir por WhatsApp <span>↗</span></button></div></aside>
+  <div class="product-modal" id="productModal" aria-hidden="true"><div class="product-modal-backdrop" id="productModalBackdrop"></div><section class="product-modal-card" role="dialog" aria-modal="true" aria-labelledby="modalProductName"><button class="close-button product-modal-close" id="productModalClose" type="button" aria-label="Cerrar producto">×</button><div id="productModalBody"></div></section></div>
+  <a class="whatsapp-float" href="https://wa.me/51906470711?text=Hola%20Santos7%20Store%2C%20quiero%20consultar%20por%20un%20producto." target="_blank" rel="noopener" title="Escribir por WhatsApp" aria-label="Escribir por WhatsApp al +51 906 470 711"><svg class="whatsapp-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.52 3.48A11.83 11.83 0 0 0 12.1 0C5.57 0 .26 5.31.26 11.84c0 2.09.55 4.13 1.6 5.93L.16 24l6.37-1.67a11.8 11.8 0 0 0 5.56 1.41h.01c6.52 0 11.83-5.31 11.83-11.84 0-3.16-1.23-6.13-3.41-8.42Zm-8.42 18.22h-.01a9.82 9.82 0 0 1-5-1.37l-.36-.21-3.78.99 1.01-3.69-.23-.38a9.82 9.82 0 0 1-1.51-5.2C2.22 6.42 6.65 2 12.1 2c2.64 0 5.12 1.03 6.98 2.9a9.82 9.82 0 0 1 2.9 6.99c0 5.42-4.43 9.81-9.88 9.81Zm5.4-7.35c-.3-.15-1.77-.87-2.05-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.27-.47-2.42-1.49-.9-.8-1.5-1.78-1.67-2.08-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.21 5.08 4.5.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35Z"></path></svg></a>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="script.js"></script>
 </body>
