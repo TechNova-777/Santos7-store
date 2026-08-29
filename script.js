@@ -346,16 +346,44 @@ const products = [
     tag: "Original",
     tone: "#d7d7d2",
     image: "assets/sandalia-nike-victori-one.jpeg"
+  },
+  {
+    id: 27,
+    name: "Nike Sabrina Lonescu",
+    category: "ropa",
+    categoryLabel: "Camiseta · Nike",
+    details: "Tallas M · L",
+    sizes: ["M", "L"],
+    price: 89,
+    oldPrice: 159,
+    tag: "Descuento",
+    tagClass: "tag-sale",
+    note: "Retail S/ 159",
+    tone: "#2d4e3b",
+    image: "assets/nike-sabrina.jpeg"
+  },
+  {
+    id: 28,
+    name: "Polo Calvin Klein",
+    category: "ropa",
+    categoryLabel: "Polo · Calvin Klein",
+    details: "Talla M",
+    sizes: ["M"],
+    price: 130,
+    oldPrice: null,
+    tag: "Original",
+    tone: "#e8e5e0",
+    image: "assets/polo-calvin-klein.jpeg"
   }
 ];
-
+ 
 const state = {
   filter: "todos",
   search: "",
   cart: loadCart(),
   favorites: new Set()
 };
-
+ 
 const productGrid = document.querySelector("#productGrid");
 const productTotal = document.querySelector("#productTotal");
 const searchInput = document.querySelector("#catalogSearch");
@@ -372,7 +400,7 @@ let toastTimer;
 let activeProductId = null;
 let activeProductSize = "";
 let activeProductQuantity = 1;
-
+ 
 function loadCart() {
   try {
     const saved = JSON.parse(localStorage.getItem("santos_store_cart") || "[]");
@@ -385,7 +413,7 @@ function loadCart() {
     return [];
   }
 }
-
+ 
 function saveCart() {
   try {
     localStorage.setItem("santos_store_cart", JSON.stringify(state.cart));
@@ -393,15 +421,15 @@ function saveCart() {
     // La tienda sigue funcionando aunque el navegador bloquee el almacenamiento.
   }
 }
-
+ 
 function money(value) {
   return `S/ ${value.toLocaleString("es-PE")}`;
 }
-
+ 
 function getProduct(id) {
   return products.find(product => product.id === id);
 }
-
+ 
 function filteredProducts() {
   return products.filter(product => {
     const matchesFilter = state.filter === "todos" || product.category === state.filter;
@@ -410,16 +438,16 @@ function filteredProducts() {
     return matchesFilter && (!query || searchable.includes(query));
   });
 }
-
+ 
 function renderProducts() {
   const visibleProducts = filteredProducts();
   productTotal.textContent = `${String(visibleProducts.length).padStart(2, "0")} modelos`;
-
+ 
   if (!visibleProducts.length) {
     productGrid.innerHTML = '<p class="no-results">No encontramos ese producto. Prueba con otra búsqueda.</p>';
     return;
   }
-
+ 
   productGrid.innerHTML = visibleProducts.map((product, index) => `
     <article class="product-card" style="animation-delay:${index * 45}ms">
       <div class="product-image" style="--product-bg:${product.tone}" data-product="${product.id}">
@@ -437,32 +465,32 @@ function renderProducts() {
     </article>
   `).join("");
 }
-
+ 
 function cartQuantity() {
   return state.cart.reduce((total, item) => total + item.qty, 0);
 }
-
+ 
 function findCartItem(id, size) {
   return state.cart.find(item => item.id === id && item.size === size);
 }
-
+ 
 function renderCart() {
   const quantity = cartQuantity();
   const subtotal = state.cart.reduce((total, item) => {
     const product = getProduct(item.id);
     return total + (product ? product.price * item.qty : 0);
   }, 0);
-
+ 
   cartCount.textContent = quantity;
   cartCount.classList.toggle("is-empty", quantity === 0);
   cartHeadCount.textContent = `(${quantity})`;
   cartSubtotal.textContent = money(subtotal);
-
+ 
   if (!state.cart.length) {
     cartItems.innerHTML = '<div class="cart-empty"><strong>Tu bolsa está vacía</strong>Elige un producto y coordina tu pedido por WhatsApp.</div>';
     return;
   }
-
+ 
   cartItems.innerHTML = state.cart.map(item => {
     const product = getProduct(item.id);
     const size = item.size ? `Talla ${item.size}` : "Talla por confirmar";
@@ -475,7 +503,7 @@ function renderCart() {
     `;
   }).join("");
 }
-
+ 
 function addToCart(id, size, quantity = 1) {
   const product = getProduct(id);
   if (!product) return;
@@ -491,7 +519,7 @@ function addToCart(id, size, quantity = 1) {
   renderCart();
   showToast(`${product.name} se añadió a tu bolsa`);
 }
-
+ 
 function changeQuantity(id, size, change) {
   const item = findCartItem(id, size);
   if (!item) return;
@@ -500,13 +528,13 @@ function changeQuantity(id, size, change) {
   saveCart();
   renderCart();
 }
-
+ 
 function removeFromCart(id, size) {
   state.cart = state.cart.filter(item => !(item.id === id && item.size === size));
   saveCart();
   renderCart();
 }
-
+ 
 function openCart() {
   closeProduct();
   cartDrawer.classList.add("is-open");
@@ -515,7 +543,7 @@ function openCart() {
   overlay.classList.add("is-visible");
   document.body.style.overflow = "hidden";
 }
-
+ 
 function closeCart() {
   cartDrawer.classList.remove("is-open");
   cartDrawer.setAttribute("aria-hidden", "true");
@@ -523,18 +551,18 @@ function closeCart() {
   overlay.classList.remove("is-visible");
   if (!productModal.classList.contains("is-open")) document.body.style.overflow = "";
 }
-
+ 
 function showToast(message) {
   toast.textContent = message;
   toast.classList.add("is-visible");
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2800);
 }
-
+ 
 function whatsappUrl(message) {
   return `https://wa.me/51906470711?text=${encodeURIComponent(message)}`;
 }
-
+ 
 function productMessage(product, size, quantity) {
   return [
     "Hola Santos7 Store, quiero comprar:",
@@ -544,7 +572,7 @@ function productMessage(product, size, quantity) {
     `Precio: ${money(product.price * quantity)}`
   ].join("\n");
 }
-
+ 
 function cartMessage() {
   const lines = ["Hola Santos7 Store, quiero confirmar este pedido:"];
   state.cart.forEach(item => {
@@ -555,7 +583,7 @@ function cartMessage() {
   lines.push("Quiero coordinar la entrega.");
   return lines.join("\n");
 }
-
+ 
 function updateModalLinks() {
   const product = getProduct(activeProductId);
   if (!product) return;
@@ -564,7 +592,7 @@ function updateModalLinks() {
   if (modalWhatsapp) modalWhatsapp.href = whatsappUrl(productMessage(product, activeProductSize, activeProductQuantity));
   if (modalQuantity) modalQuantity.textContent = activeProductQuantity;
 }
-
+ 
 function openProduct(id) {
   const product = getProduct(id);
   if (!product) return;
@@ -575,7 +603,7 @@ function openProduct(id) {
   const sizeMarkup = product.sizes.length
     ? `<div class="modal-field"><div class="modal-field-label"><span>Elige tu talla</span><small>Selecciona una opción</small></div><div class="size-options" id="modalSizeList">${product.sizes.map((size, index) => `<button class="size-button ${index === 0 ? "is-selected" : ""}" type="button" data-modal-size="${size}">${size}</button>`).join("")}</div></div>`
     : `<div class="modal-field"><div class="modal-field-label"><span>Talla</span><small>Confirma disponibilidad por WhatsApp</small></div></div>`;
-
+ 
   productModalBody.innerHTML = `
     <div class="modal-product">
       <div class="modal-product-image" style="--product-bg:${product.tone}"><img src="${product.image}" alt="${product.name}"><span>${product.tag}</span></div>
@@ -587,13 +615,13 @@ function openProduct(id) {
   productModal.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
 }
-
+ 
 function closeProduct() {
   productModal.classList.remove("is-open");
   productModal.setAttribute("aria-hidden", "true");
   if (!cartDrawer.classList.contains("is-open")) document.body.style.overflow = "";
 }
-
+ 
 document.querySelectorAll("[data-filter]").forEach(button => {
   button.addEventListener("click", () => {
     state.filter = button.dataset.filter;
@@ -602,7 +630,7 @@ document.querySelectorAll("[data-filter]").forEach(button => {
     document.querySelector("#catalogo").scrollIntoView({ behavior: "smooth", block: "start" });
   });
 });
-
+ 
 document.querySelectorAll("[data-category-link]").forEach(link => {
   link.addEventListener("click", () => {
     const filter = link.dataset.categoryLink;
@@ -611,17 +639,17 @@ document.querySelectorAll("[data-category-link]").forEach(link => {
     renderProducts();
   });
 });
-
+ 
 searchInput.addEventListener("input", event => {
   state.search = event.target.value;
   renderProducts();
 });
-
+ 
 document.querySelector(".search-trigger").addEventListener("click", () => {
   document.querySelector("#catalogo").scrollIntoView({ behavior: "smooth" });
   setTimeout(() => searchInput.focus(), 500);
 });
-
+ 
 productGrid.addEventListener("click", event => {
   const favoriteButton = event.target.closest("[data-favorite]");
   if (favoriteButton) {
@@ -634,7 +662,7 @@ productGrid.addEventListener("click", event => {
   const productTrigger = event.target.closest("[data-product]");
   if (productTrigger) openProduct(Number(productTrigger.dataset.product));
 });
-
+ 
 productModalBody.addEventListener("click", event => {
   const sizeButton = event.target.closest("[data-modal-size]");
   const quantityButton = event.target.closest("[data-modal-quantity]");
@@ -656,20 +684,20 @@ productModalBody.addEventListener("click", event => {
     }
   }
 });
-
+ 
 cartItems.addEventListener("click", event => {
   const quantityButton = event.target.closest("[data-quantity-id]");
   const removeButton = event.target.closest("[data-remove-id]");
   if (quantityButton) changeQuantity(Number(quantityButton.dataset.quantityId), quantityButton.dataset.quantitySize, Number(quantityButton.dataset.change));
   if (removeButton) removeFromCart(Number(removeButton.dataset.removeId), removeButton.dataset.removeSize);
 });
-
+ 
 document.querySelector("#cartTrigger").addEventListener("click", openCart);
 document.querySelector("#cartClose").addEventListener("click", closeCart);
 overlay.addEventListener("click", closeCart);
 document.querySelector("#productModalClose")?.addEventListener("click", closeProduct);
 document.querySelector("#productModalBackdrop")?.addEventListener("click", closeProduct);
-
+ 
 document.querySelector("#checkoutButton").addEventListener("click", () => {
   if (!state.cart.length) {
     showToast("Agrega un producto antes de continuar");
@@ -677,7 +705,7 @@ document.querySelector("#checkoutButton").addEventListener("click", () => {
   }
   window.open(whatsappUrl(cartMessage()), "_blank", "noopener,noreferrer");
 });
-
+ 
 const menuTrigger = document.querySelector("#menuTrigger");
 const mainNav = document.querySelector("#mainNav");
 menuTrigger.addEventListener("click", () => {
@@ -688,7 +716,7 @@ mainNav.querySelectorAll("a").forEach(link => link.addEventListener("click", () 
   mainNav.classList.remove("is-open");
   menuTrigger.setAttribute("aria-expanded", "false");
 }));
-
+ 
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") {
     closeProduct();
@@ -697,6 +725,6 @@ document.addEventListener("keydown", event => {
     menuTrigger.setAttribute("aria-expanded", "false");
   }
 });
-
+ 
 renderProducts();
 renderCart();
