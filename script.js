@@ -1,4 +1,5 @@
-const products = [
+
+    const products = [
       {
         id: 1,
         name: "Sandalia Kappa",
@@ -360,7 +361,7 @@ const products = [
         tagClass: "tag-sale",
         note: "Retail S/ 159",
         tone: "#2d4e3b",
-        image: "https://raw.githubusercontent.com/TechNova-777/Santos7-store/main/assets/nike_sabrina.jpeg"
+        image: "https://raw.githubusercontent.com/TechNova-777/Santos7-store/main/nike%20sabrina.jpeg"
       },
       {
         id: 28,
@@ -373,7 +374,7 @@ const products = [
         oldPrice: null,
         tag: "Original",
         tone: "#e8e5e0",
-        image: "https://raw.githubusercontent.com/TechNova-777/Santos7-store/main/assets/polo_calvin_klein.jpeg"
+        image: "https://raw.githubusercontent.com/TechNova-777/Santos7-store/main/polo%20calvin%20klein.jpeg"
       }
     ];
      
