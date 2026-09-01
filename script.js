@@ -145,16 +145,20 @@ function getProduct(id) {
 }
 
 function formatProductPrice(product) {
+  if (product.priceLabel) return product.priceLabel;
   if (!Number.isFinite(product.price)) return "Precio por confirmar";
   const qualifier = product.priceKind === "official-approx" ? " · oficial aprox." : "";
   return `${money(product.price)}${qualifier}`;
 }
 
 function formatPriceForMessage(product, quantity = 1) {
+  if (product.availability === "out_of_stock" || product.stock === 0) return "Agotado";
   if (!Number.isFinite(product.price)) return "Precio por confirmar";
   const total = product.price * quantity;
   const qualifier = product.priceKind === "official-approx" ? " (oficial aprox.)" : "";
-  return `${money(total)}${qualifier}`;
+  const deposit = Number(product.depositPrice);
+  const depositLabel = Number.isFinite(deposit) ? ` · separa con ${money(deposit)}` : "";
+  return `${money(total)}${qualifier}${depositLabel}`;
 }
 
 function getReferencePrice(product) {
@@ -209,6 +213,10 @@ function renderSalePrice(product, className = "") {
 
 function renderCartPrice(product, quantity = 1) {
   if (!Number.isFinite(product.price)) return "Precio por confirmar";
+  const deposit = Number(product.depositPrice);
+  if (Number.isFinite(deposit)) {
+    return `<strong>${money(deposit)} para separar</strong><small class="cart-total">Total ${money(product.price * quantity)}</small>`;
+  }
   const referencePrice = getReferencePrice(product);
   return `${referencePrice ? `<del>${money(referencePrice * quantity)}</del>` : ""}<strong>${money(product.price * quantity)}</strong>`;
 }
@@ -226,6 +234,7 @@ function availableUnits(product, size) {
 }
 
 function availabilityLabel(product) {
+  if (product.availability === "out_of_stock" || product.stock === 0) return "Agotado";
   if (Number.isFinite(product.stock)) {
     return `${product.stock} ${product.stock === 1 ? "unidad" : "unidades"} disponibles`;
   }
@@ -273,7 +282,7 @@ function renderMedia(product, className = "", imageIndex = 0) {
     return `<span class="media-placeholder ${className}"><span>Foto por confirmar</span></span>`;
   }
 
-  return `<img class="${className}" src="${productImagePath(image)}" alt="${escapeHtml(product.name)}" loading="lazy" style="object-fit:${product.imageFit}">`;
+  return `<img class="${className}" src="${productImagePath(image)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" width="700" height="795" style="object-fit:${product.imageFit}">`;
 }
 
 function renderProducts() {
@@ -291,9 +300,10 @@ function renderProducts() {
     const isPending = !Number.isFinite(product.price);
     const priceClass = isPending ? "price-pending" : "";
     const availability = availabilityLabel(product);
+    const isSoldOut = product.availability === "out_of_stock" || product.stock === 0;
     const hasSale = Boolean(getReferencePrice(product) && formatDiscount(product));
     const tagClass = hasSale || product.tagClass ? (product.tagClass || "tag-sale") : "";
-    const productTag = hasSale ? (product.saleLabel || "Oferta Santos7") : (product.tag || (isPending ? "Consultar" : "Original"));
+    const productTag = isSoldOut ? "Agotado" : (hasSale ? (product.saleLabel || "Oferta Santos7") : (product.tag || (isPending ? "Consultar" : "Original")));
 
     return `
       <article class="product-card" style="animation-delay:${index * 45}ms">
@@ -310,12 +320,12 @@ function renderProducts() {
               <p class="product-category">${escapeHtml(product.categoryLabel)}</p>
               <h3>${escapeHtml(product.name)}</h3>
               ${product.details ? `<p class="product-details">${escapeHtml(product.details)}</p>` : ""}
-              ${availability ? `<p class="product-stock ${isPending ? "stock-pending" : ""}">${escapeHtml(availability)}</p>` : ""}
+              ${availability ? `<p class="product-stock ${isPending ? "stock-pending" : ""}"><span class="stock-dot"></span>${escapeHtml(availability)}</p>` : ""}
               ${product.note ? `<p class="product-note">${escapeHtml(product.note)}</p>` : ""}
             </div>
             ${renderSalePrice(product, `product-price ${priceClass}`)}
           </div>
-          <button class="add-button" type="button" data-product="${product.id}">${isPending ? "Consultar pieza" : "Ver producto"}<span>↗</span></button>
+          <button class="add-button ${isSoldOut ? "is-disabled" : ""}" type="button" data-product="${product.id}">${isSoldOut ? "Ver detalles · agotado" : (isPending ? "Consultar pieza" : "Ver producto")}<span>↗</span></button>
         </div>
       </article>
     `;
@@ -369,7 +379,7 @@ function renderCart() {
     return `
       <div class="cart-item">
         <div class="cart-item-image" style="--product-bg:${product.tone || "var(--gray)"}">
-          ${image ? `<img src="${productImagePath(image)}" alt="${escapeHtml(product.name)}" loading="lazy" style="object-fit:${product.imageFit}">` : '<span class="media-placeholder"><span>Foto por confirmar</span></span>'}
+          ${image ? `<img src="${productImagePath(image)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" width="76" height="76" style="object-fit:${product.imageFit}">` : '<span class="media-placeholder"><span>Foto por confirmar</span></span>'}
         </div>
         <div>
           <h3>${escapeHtml(product.name)}</h3>
@@ -509,7 +519,7 @@ function renderProductGallery(product) {
   const thumbnails = product.images.length > 1
     ? `<div class="modal-gallery-thumbs" role="list" aria-label="Más fotos de ${escapeHtml(product.name)}">${product.images.map((image, index) => `
         <button class="modal-gallery-thumb ${index === 0 ? "is-active" : ""}" type="button" data-modal-image="${index}" aria-label="Ver foto ${index + 1} de ${product.images.length}" aria-pressed="${index === 0}">
-          <img src="${productImagePath(image)}" alt="" loading="lazy" style="object-fit:${product.imageFit}">
+          <img src="${productImagePath(image)}" alt="" loading="lazy" decoding="async" width="68" height="68" style="object-fit:${product.imageFit}">
         </button>
       `).join("")}</div>`
     : "";
@@ -538,15 +548,18 @@ function updateModalLinks() {
   const quantityMinus = productModalBody.querySelector('[data-modal-quantity="-1"]');
   const quantityPlus = productModalBody.querySelector('[data-modal-quantity="1"]');
   const available = availableUnits(product, activeProductSize);
+  const isSoldOut = product.availability === "out_of_stock" || product.stock === 0;
 
   if (Number.isFinite(available)) {
     activeProductQuantity = Math.min(activeProductQuantity, Math.max(1, available));
   }
   if (modalWhatsapp) modalWhatsapp.href = whatsappUrl(productMessage(product, activeProductSize, activeProductQuantity));
-  if (modalWhatsappText) modalWhatsappText.textContent = Number.isFinite(product.price) ? "Comprar por WhatsApp" : "Consultar por WhatsApp";
+  if (modalWhatsappText) modalWhatsappText.textContent = isSoldOut ? "Consultar disponibilidad" : (Number.isFinite(product.price) ? "Comprar por WhatsApp" : "Consultar por WhatsApp");
   if (modalQuantity) modalQuantity.textContent = activeProductQuantity;
   if (modalStock) {
-    modalStock.textContent = Number.isFinite(available)
+    modalStock.textContent = isSoldOut
+      ? "Agotado"
+      : Number.isFinite(available)
       ? `${available} ${available === 1 ? "unidad" : "unidades"} disponibles${activeProductSize ? ` en ${sizeLabel(product, activeProductSize)}` : ""}`
       : availabilityLabel(product);
   }
@@ -629,6 +642,7 @@ function openProduct(id) {
     ? `<div class="modal-field"><div class="modal-field-label"><span>Elige tu talla</span><small>${product.sizeSystem ? `Tallas ${escapeHtml(product.sizeSystem)}` : "Selecciona una opción"}</small></div><div class="size-options" id="modalSizeList">${product.sizes.map((size, index) => `<button class="size-button ${index === 0 ? "is-selected" : ""}" type="button" data-modal-size="${escapeHtml(size)}" aria-pressed="${index === 0}">${escapeHtml(size)}</button>`).join("")}</div></div>`
     : `<div class="modal-field"><div class="modal-field-label"><span>Talla</span><small>Confirma disponibilidad por WhatsApp</small></div></div>`;
   const pending = !Number.isFinite(product.price);
+  const isSoldOut = product.availability === "out_of_stock" || product.stock === 0;
 
   productModalBody.innerHTML = `
     <div class="modal-product">
@@ -642,7 +656,7 @@ function openProduct(id) {
         ${sizeMarkup}
         <p class="modal-stock-status" id="modalStockStatus"></p>
         <div class="modal-quantity"><span>Cantidad</span><div class="quantity-control"><button type="button" data-modal-quantity="-1" aria-label="Disminuir cantidad">−</button><b id="modalQuantityValue">1</b><button type="button" data-modal-quantity="1" aria-label="Aumentar cantidad">＋</button></div></div>
-        <div class="modal-actions"><button class="button button-dark" id="modalAdd" type="button"><span id="modalAddText">${pending ? "Añadir a consultas" : "Añadir a bolsa"}</span> <span>＋</span></button><a class="button button-whatsapp" id="modalWhatsapp" href="#" target="_blank" rel="noopener"><span id="modalWhatsappText">${pending ? "Consultar por WhatsApp" : "Comprar por WhatsApp"}</span> <span>↗</span></a></div>
+        <div class="modal-actions"><button class="button button-dark" id="modalAdd" type="button" ${isSoldOut ? "disabled" : ""}><span id="modalAddText">${isSoldOut ? "Agotado" : (pending ? "Añadir a consultas" : "Añadir a bolsa")}</span> <span>${isSoldOut ? "—" : "＋"}</span></button><a class="button button-whatsapp" id="modalWhatsapp" href="#" target="_blank" rel="noopener"><span id="modalWhatsappText">${isSoldOut ? "Consultar disponibilidad" : (pending ? "Consultar por WhatsApp" : "Comprar por WhatsApp")}</span> <span>↗</span></a></div>
         <small class="modal-footnote">El stock y la entrega se confirman directamente contigo.</small>
       </div>
     </div>
