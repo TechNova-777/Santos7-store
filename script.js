@@ -306,8 +306,8 @@ function renderProducts() {
     const productTag = isSoldOut ? "Agotado" : (hasSale ? (product.saleLabel || "Oferta Santos7") : (product.tag || (isPending ? "Consultar" : "Original")));
 
     return `
-      <article class="product-card" style="animation-delay:${index * 45}ms">
-        <div class="product-image" style="--product-bg:${product.tone || "var(--gray)"}">
+      <article class="product-card ${isSoldOut ? "is-sold-out" : ""}" style="animation-delay:${index * 45}ms">
+        <div class="product-image ${isSoldOut ? "product-is-sold-out" : ""}" style="--product-bg:${product.tone || "var(--gray)"}">
           <button class="product-image-trigger" type="button" data-product="${product.id}" aria-label="Ver detalles de ${escapeHtml(product.name)}">
             ${renderMedia(product, "product-image-media")}
           </button>
