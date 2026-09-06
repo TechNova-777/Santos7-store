@@ -83,6 +83,10 @@ let activeProductQuantity = 1;
 let activeProductImageIndex = 0;
 let lastFocusedElement = null;
 let lastProductTrigger = null;
+const campaignVideo = document.querySelector("#campaignVideo");
+const campaignVideoToggle = document.querySelector("#campaignVideoToggle");
+const campaignVideoToggleIcon = campaignVideoToggle?.querySelector(".campaign-video-toggle-icon");
+const campaignVideoToggleLabel = campaignVideoToggle?.querySelector(".campaign-video-toggle-label");
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>\"']/g, character => ({
@@ -247,6 +251,15 @@ function matchesProductFilter(product) {
     || product.subCategory === state.filter;
 }
 
+function productToneBrightness(product) {
+  const tone = String(product.tone || "").replace("#", "");
+  if (!/^[0-9a-f]{6}$/i.test(tone)) return 0;
+  const red = parseInt(tone.slice(0, 2), 16);
+  const green = parseInt(tone.slice(2, 4), 16);
+  const blue = parseInt(tone.slice(4, 6), 16);
+  return (red + green + blue) / 3;
+}
+
 function filteredProducts() {
   const query = state.search.trim().toLowerCase();
   return catalog.filter(product => {
@@ -273,7 +286,7 @@ function filteredProducts() {
     ].join(" ").toLowerCase();
 
     return searchable.includes(query);
-  });
+  }).sort((first, second) => productToneBrightness(second) - productToneBrightness(first));
 }
 
 function renderMedia(product, className = "", imageIndex = 0) {
@@ -325,7 +338,7 @@ function renderProducts() {
             </div>
             ${renderSalePrice(product, `product-price ${priceClass}`)}
           </div>
-          <button class="add-button ${isSoldOut ? "is-disabled" : ""}" type="button" data-product="${product.id}">${isSoldOut ? "Ver detalles · agotado" : (isPending ? "Consultar pieza" : "Ver producto")}<span>↗</span></button>
+          <button class="add-button ${isSoldOut ? "is-disabled" : ""}" type="button" data-product="${product.id}">${isSoldOut ? "Ver detalles · agotado" : (isPending ? "Consultar pieza" : "Comprar ahora")}<span>↗</span></button>
         </div>
       </article>
     `;
@@ -813,5 +826,49 @@ document.addEventListener("keydown", event => {
   if (imageLightbox.classList.contains("is-open") && event.key === "ArrowRight") moveLightboxImage(1);
 });
 
+function updateCampaignVideoControl() {
+  if (!campaignVideo || !campaignVideoToggle) return;
+  const isPaused = campaignVideo.paused;
+  campaignVideoToggle.classList.toggle("is-paused", isPaused);
+  campaignVideoToggle.setAttribute("aria-pressed", String(!isPaused));
+  campaignVideoToggle.setAttribute("aria-label", isPaused ? "Reproducir video" : "Pausar video");
+  if (campaignVideoToggleIcon) campaignVideoToggleIcon.textContent = isPaused ? "▶" : "Ⅱ";
+  if (campaignVideoToggleLabel) campaignVideoToggleLabel.textContent = isPaused ? "Reproducir video" : "Pausar video";
+}
+
+function setupCampaignVideo() {
+  if (!campaignVideo) return;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (reducedMotion.matches) {
+    campaignVideo.pause();
+    if (campaignVideoToggle) campaignVideoToggle.disabled = true;
+  } else if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      campaignVideo.play().catch(() => {});
+      observer.disconnect();
+    }, { rootMargin: "160px 0px", threshold: 0.15 });
+    observer.observe(campaignVideo);
+  } else {
+    campaignVideo.play().catch(() => {});
+  }
+
+  campaignVideo.addEventListener("play", updateCampaignVideoControl);
+  campaignVideo.addEventListener("pause", updateCampaignVideoControl);
+  campaignVideo.addEventListener("ended", updateCampaignVideoControl);
+  campaignVideo.addEventListener("error", () => {
+    campaignVideo.closest(".campaign-video-shell")?.classList.add("is-unavailable");
+    if (campaignVideoToggle) campaignVideoToggle.disabled = true;
+    updateCampaignVideoControl();
+  });
+  campaignVideoToggle?.addEventListener("click", () => {
+    if (campaignVideo.paused) campaignVideo.play().catch(() => {});
+    else campaignVideo.pause();
+  });
+  updateCampaignVideoControl();
+}
+
+setupCampaignVideo();
 renderProducts();
 renderCart();
