@@ -826,3 +826,23 @@ button:disabled { cursor: not-allowed; opacity: .45; }
   .shop-heading { padding-bottom: 22px; }
   .shop-status { min-width: 0; }
 }
+
+/* Social marks supplied by Santos7 */
+.social-app-icon { background: transparent; border: 0; border-radius: 9px; height: 40px; overflow: hidden; padding: 0; width: 40px; }
+.social-app-logo { display: block; height: 100%; object-fit: contain; width: 100%; }
+.social-whatsapp > .social-whatsapp-logo { height: 38px; width: 38px; }
+.social-whatsapp .social-app-icon { display: none; }
+.social-whatsapp .social-app-icon svg { display: none; }
+.footer-socials a { align-items: center; display: inline-flex; gap: 7px; }
+.footer-socials a::before { background: center / contain no-repeat; content: ""; display: inline-block; height: 18px; width: 18px; }
+.footer-socials a:nth-of-type(1)::before { background-image: url("assets/social-tiktok.png"); }
+.footer-socials a:nth-of-type(2)::before { background-image: url("assets/social-instagram.png"); }
+.footer-socials a:nth-of-type(3)::before { background-image: url("assets/social-whatsapp.png"); }
+.whatsapp-float .whatsapp-icon { display: none; }
+.whatsapp-float::before { background: url("assets/social-whatsapp.png") center / contain no-repeat; content: ""; height: 36px; width: 36px; }
+
+@media (max-width: 760px) {
+  .social-app-icon { height: 38px; width: 38px; }
+  .social-whatsapp > .social-whatsapp-logo { height: 36px; width: 36px; }
+  .whatsapp-float::before { height: 34px; width: 34px; }
+}

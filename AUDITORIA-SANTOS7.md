@@ -104,5 +104,6 @@ El archivo original `santos store.mp4` se convirtió a `assets/santos-store-web.
 9. Se ajustó el orden del catálogo para priorizar tonos claros/blancos, se corrigió el logo para que conserve su composición original y se pulieron los botones del video con estilo premium.
 10. Se refinó la primera impresión: el encabezado se integra sobre la campaña, el video ocupa la pantalla inicial y la interfaz dirige la atención desde “Lo tuyo se nota” hacia descubrir y comprar.
 11. Se retiró el logo duplicado dentro del video para dejar una portada más limpia; el logo principal queda en el encabezado y el video se apoya en una línea coral, gradiente de lectura y jerarquía tipográfica.
+12. Se integraron los logos PNG proporcionados de TikTok, Instagram y WhatsApp en sus tarjetas, enlaces del pie de página y botón flotante, respetando sus proporciones originales.
 
 Antes de publicar en Vercel, incluye en el commit `assets/santos-store-web.mp4` y las fotos de cajas. El archivo original `santos store.mp4` puede conservarse como máster, pero la portada usa la copia web compatible.
