@@ -540,19 +540,19 @@ const newSneakers = [
     category: "calzado",
     subCategory: "zapatillas",
     categoryLabel: "Zapatillas · Nike",
-    details: "Talla EUR 43",
+    details: "Tallas EUR 43 y 44.5",
     sizeSystem: "EUR",
-    sizes: ["43"],
-    stock: 1,
-    stockBySize: { "43": 1 },
-    price: 199.90,
+    sizes: ["43", "44.5"],
+    stock: 2,
+    stockBySize: { "43": 1, "44.5": 1 },
+    price: 135,
     priceKind: "store",
     availability: "in_stock",
     images: ["img1/tiempo legent.jpg"],
     image: "img1/tiempo legent.jpg",
     imageFit: "contain",
     tag: "Original",
-    note: "Sin descuento · 1 unidad",
+    note: "Sin descuento · 2 unidades",
     tone: "#efedf0"
   },
   {
@@ -617,11 +617,11 @@ const newSneakers = [
     category: "calzado",
     subCategory: "zapatillas",
     categoryLabel: "Zapatillas · Nike",
-    details: "Talla EUR 41",
+    details: "Talla EUR 39",
     sizeSystem: "EUR",
-    sizes: ["41"],
+    sizes: ["39"],
     stock: 1,
-    stockBySize: { "41": 1 },
+    stockBySize: { "39": 1 },
     price: 225,
     referencePrice: 329.90,
     referenceType: "label",
@@ -1361,8 +1361,8 @@ const consultableProducts = [
     category: "ropa",
     subCategory: "polos",
     categoryLabel: "Polos · Puma F1",
-    details: "Talla por confirmar",
-    sizes: [],
+    details: "Talla S",
+    sizes: ["S"],
     stock: null,
     stockBySize: null,
     price: 70,
@@ -1378,7 +1378,7 @@ const consultableProducts = [
     imageFit: "contain",
     tag: "Oferta Santos7",
     tagClass: "tag-sale",
-    note: "Precio PUMA de referencia · talla por confirmar",
+    note: "Precio PUMA de referencia · disponibilidad por confirmar",
     tone: "#f0f0f0"
   },
   {
@@ -1738,7 +1738,7 @@ const latestProducts = [
 // La grabación confirmó estas referencias como repetidas o con precio/datos
 // incorrectos. Se conservan sus imágenes y objetos de origen, pero no se
 // muestran como stock activo hasta volver a confirmarlos.
-const removedProductIds = new Set([2, 8, 47, 49, 54, 58, 59]);
+const removedProductIds = new Set([2, 8, 35, 47, 49, 54, 58, 59, 65]);
 
 export const products = [...latestProducts, ...existingProducts, ...newSneakers, ...consultableProducts]
   .filter((product) => !removedProductIds.has(product.id))
