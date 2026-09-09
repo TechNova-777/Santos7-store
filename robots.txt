@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://technova-777.github.io/Santos7-store/sitemap.xml
+Sitemap: https://technova-777.github.io/Santos7-store/sitemap.txt
