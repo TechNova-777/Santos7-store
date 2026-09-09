@@ -398,7 +398,7 @@ function renderProducts() {
 function syncStructuredData() {
   if (!catalogStructuredData) return;
 
-  const siteUrl = "https://technova-777.github.io";
+  const siteUrl = "https://technova-777.github.io/Santos7-store";
   const itemListElement = catalog
     .filter(product => !isProductSoldOut(product) && product.images.length)
     .map((product, index) => {
