@@ -3,12 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Santos7 Store: sneakers, ropa y accesorios seleccionados en Lima. Stock real, tallas EUR y atención directa.">
+  <meta name="description" content="Santos7 Store en Lima: compra zapatillas Nike, Puma y Jordan, ropa y accesorios originales con ofertas, tallas EUR, stock real y atención por WhatsApp.">
+  <meta name="author" content="Santos7 Store">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="theme-color" content="#0b0c0f">
   <meta property="og:title" content="Santos7 Store | Lo tuyo se nota">
-  <meta property="og:description" content="Sneakers, ropa y accesorios seleccionados en Lima. Mira el drop y elige tu próxima pieza.">
+  <meta property="og:description" content="Zapatillas, ropa y accesorios originales en Lima. Descubre ofertas y compra tu próxima pieza por WhatsApp.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://technova-777.github.io/">
+  <meta property="og:image" content="https://technova-777.github.io/assets/santos7-logo.jpeg">
+  <meta property="og:locale" content="es_PE">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Santos7 Store | Zapatillas, ropa y accesorios en Lima">
+  <meta name="twitter:description" content="Stock real, ofertas y atención directa por WhatsApp.">
+  <meta name="twitter:image" content="https://technova-777.github.io/assets/santos7-logo.jpeg">
+  <link rel="canonical" href="https://technova-777.github.io/">
   <title>Santos7 Store | Lo tuyo se nota</title>
+  <script type="application/ld+json" id="siteStructuredData">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://technova-777.github.io/#organization",
+        "name": "Santos7 Store",
+        "url": "https://technova-777.github.io/",
+        "logo": "https://technova-777.github.io/assets/santos7-logo.jpeg",
+        "sameAs": [
+          "https://www.instagram.com/santos7_store",
+          "https://www.tiktok.com/@santosstore7____",
+          "https://wa.me/51906470711"
+        ]
+      },
+      {
+        "@type": "Store",
+        "@id": "https://technova-777.github.io/#store",
+        "name": "Santos7 Store",
+        "url": "https://technova-777.github.io/",
+        "image": "https://technova-777.github.io/assets/santos7-logo.jpeg",
+        "priceRange": "S/ 40 - S/ 499.90",
+        "currenciesAccepted": "PEN",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Lima",
+          "addressCountry": "PE"
+        },
+        "telephone": "+51 906 470 711"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://technova-777.github.io/#website",
+        "name": "Santos7 Store",
+        "url": "https://technova-777.github.io/",
+        "publisher": { "@id": "https://technova-777.github.io/#organization" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://technova-777.github.io/?q={search_term_string}#catalogo"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json" id="catalogStructuredData">{"@context":"https://schema.org","@type":"ItemList","name":"Catálogo Santos7 Store","itemListElement":[]}</script>
   <link rel="icon" href="assets/santos7-logo.jpeg" type="image/jpeg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,16 +83,23 @@
     <header class="site-header">
       <a href="#inicio" class="brand" aria-label="Santos7 Store, inicio"><img class="brand-logo" src="assets/santos7-logo.jpeg" alt="Santos7 Store" width="58" height="58" decoding="async"></a>
       <nav class="main-nav" id="mainNav" aria-label="Navegación principal">
-        <a href="#catalogo">Novedades</a>
-        <a href="#video-campana">Video</a>
-        <a href="#comunidad">Comunidad</a>
-        <a href="#compras">Cómo comprar</a>
-        <a href="#nosotros">Nosotros</a>
+        <a href="#inicio" class="is-current">Inicio</a>
+        <a href="#catalogo" data-header-filter="zapatillas">Zapatillas</a>
+        <a href="#catalogo" data-header-filter="ropa">Ropa</a>
+        <a href="#catalogo" data-header-filter="accesorios">Accesorios</a>
+        <a href="#compras">Contacto</a>
       </nav>
       <div class="header-actions">
+        <label class="header-search" for="headerSearch">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 5 5"></path></svg>
+          <input id="headerSearch" type="search" placeholder="Buscar zapatillas..." aria-label="Buscar zapatillas, ropa o accesorios" autocomplete="off">
+        </label>
+        <a class="header-icon account-trigger" href="#nosotros" aria-label="Conocer Santos7 Store">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path d="M4.5 20c.5-3.4 3.1-5.5 7.5-5.5s7 2.1 7.5 5.5"></path></svg>
+        </a>
         <a class="header-contact" href="https://wa.me/51906470711?text=Hola%20Santos7%20Store%2C%20quiero%20consultar%20por%20un%20producto." target="_blank" rel="noopener">Escríbenos <span>↗</span></a>
         <button class="header-icon search-trigger" type="button" aria-label="Buscar en el catálogo" title="Buscar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 5 5"></path></svg></button>
-        <button class="cart-trigger" id="cartTrigger" type="button" aria-label="Abrir bolsa" aria-controls="cartDrawer" aria-expanded="false"><span>Bolsa</span><strong class="cart-count" id="cartCount">0</strong></button>
+        <button class="cart-trigger" id="cartTrigger" type="button" aria-label="Abrir bolsa" aria-controls="cartDrawer" aria-expanded="false"><svg class="header-cart-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.1 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 1.9-1.4L21 8H6"></path><circle cx="10" cy="20" r="1.2"></circle><circle cx="18" cy="20" r="1.2"></circle></svg><span class="cart-label">Bolsa</span><strong class="cart-count" id="cartCount">0</strong></button>
         <button class="header-icon menu-trigger" id="menuTrigger" type="button" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span></button>
       </div>
     </header>
@@ -84,9 +151,15 @@
       </section>
 
       <section class="shop-section" id="catalogo">
-        <div class="shop-heading"><div><p class="eyebrow">01 / El drop disponible</p><h2>Disponible<br><em>ahora.</em></h2></div><div class="shop-status"><span class="status-dot"></span><span id="productTotal" aria-live="polite">72 referencias</span><small>stock visible</small></div></div>
-        <div class="catalog-toolbar"><div class="filter-list" role="group" aria-label="Filtrar catálogo"><button type="button" class="filter-button is-active" data-filter="todos">Todo el drop</button><button type="button" class="filter-button" data-filter="calzado">Calzado</button><button type="button" class="filter-button" data-filter="zapatillas">Zapatillas</button><button type="button" class="filter-button" data-filter="sandalias">Sandalias</button><button type="button" class="filter-button" data-filter="ropa">Ropa</button><button type="button" class="filter-button" data-filter="polos">Polos</button><button type="button" class="filter-button" data-filter="shorts">Shorts</button><button type="button" class="filter-button" data-filter="accesorios">Accesorios</button><button type="button" class="filter-button" data-filter="gorras">Gorras</button><button type="button" class="filter-button" data-filter="mochilas">Mochilas</button></div><label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 5 5"></path></svg><input id="catalogSearch" type="search" placeholder="Busca tu próxima pieza" aria-label="Buscar marca o modelo" autocomplete="off"></label></div>
+        <div class="shop-heading"><div><p class="eyebrow">01 / El drop disponible</p><h2>Disponible<br><em>ahora.</em></h2></div><div class="shop-status"><span class="status-dot"></span><span id="productTotal" aria-live="polite">66 disponibles</span><small>listos para comprar</small></div></div>
+        <div class="catalog-toolbar"><div class="filter-list" role="group" aria-label="Filtrar catálogo"><button type="button" class="filter-button is-active" data-filter="todos">Todo el drop</button><button type="button" class="filter-button filter-button-sale" data-filter="ofertas">Ofertas</button><button type="button" class="filter-button" data-filter="calzado">Calzado</button><button type="button" class="filter-button" data-filter="zapatillas">Zapatillas</button><button type="button" class="filter-button" data-filter="sandalias">Sandalias</button><button type="button" class="filter-button" data-filter="ropa">Ropa</button><button type="button" class="filter-button" data-filter="polos">Polos</button><button type="button" class="filter-button" data-filter="shorts">Shorts</button><button type="button" class="filter-button" data-filter="accesorios">Accesorios</button><button type="button" class="filter-button" data-filter="gorras">Gorras</button><button type="button" class="filter-button" data-filter="mochilas">Mochilas</button></div><label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 5 5"></path></svg><input id="catalogSearch" type="search" placeholder="Busca modelo, marca o talla" aria-label="Buscar modelo, marca o talla" autocomplete="off"></label></div>
+        <div class="catalog-active-summary" aria-live="polite"><span class="catalog-active-summary-mark"></span><span>Ofertas y stock disponible primero</span><span class="catalog-active-summary-line"></span></div>
         <div class="product-grid" id="productGrid"></div>
+        <section class="sold-out-section" id="soldOutSection" hidden aria-labelledby="soldOutTitle">
+          <div class="sold-out-heading"><div><p class="eyebrow">Catálogo · stock cerrado</p><h3 id="soldOutTitle">Agotados <em>por ahora.</em></h3></div><span class="sold-out-count" id="soldOutTotal">0 referencias</span></div>
+          <p class="sold-out-copy">Estos modelos ya no se pueden comprar. Los dejamos separados para que encuentres rápido lo que sí está disponible.</p>
+          <div class="product-grid product-grid-sold-out" id="soldOutGrid"></div>
+        </section>
       </section>
  
       <section class="service-section" id="compras"><div class="service-intro"><p class="eyebrow">02 / Compra sin vueltas</p><h2>Del chat<br><em>a tu look.</em></h2><p>Talla, precio y entrega claros desde el primer mensaje.</p></div><div class="service-content"><div class="service-main-card"><span class="service-label">SANTOS7 / RUTA DE COMPRA</span><h3>Pide.<br><em>Separa.</em><br>Úsalo.</h3><div class="service-main-footer"><span>Unidad / mayor</span><span>Stock real</span></div></div><div class="service-list"><article class="service-row"><span>01</span><div><h3>Reserva tu pieza</h3><p>Separaciones a partir de 3 días con un Yape de <strong>S/ 10</strong>.</p></div><b>↗</b></article><article class="service-row"><span>02</span><div><h3>Yape directo</h3><p><strong>906 470 711</strong><br>Frits Santos Campos</p></div><b>↗</b></article><article class="service-row"><span>03</span><div><h3>Recoge en estación</h3><p>Separa con S/ 10 + costo de entrega de <strong>S/ 5</strong>.</p></div><b>↗</b></article><article class="service-row"><span>04</span><div><h3>Envío por Shalom</h3><p>Cancelas tu pedido completo antes de enviarlo.</p></div><b>↗</b></article></div></div></section>

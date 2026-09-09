@@ -48,17 +48,25 @@ function normalizeProduct(product) {
 }
 
 const catalog = products.map(normalizeProduct);
+const initialSearch = new URLSearchParams(window.location.search).get("q") || "";
 
 const state = {
   filter: "todos",
-  search: "",
+  search: initialSearch,
   cart: loadCart(),
   favorites: new Set()
 };
 
 const productGrid = document.querySelector("#productGrid");
 const productTotal = document.querySelector("#productTotal");
+const catalogSection = document.querySelector("#catalogo");
+const soldOutSection = document.querySelector("#soldOutSection");
+const soldOutGrid = document.querySelector("#soldOutGrid");
+const soldOutTotal = document.querySelector("#soldOutTotal");
 const searchInput = document.querySelector("#catalogSearch");
+const headerSearch = document.querySelector("#headerSearch");
+const catalogStructuredData = document.querySelector("#catalogStructuredData");
+const defaultPageTitle = document.title;
 const cartDrawer = document.querySelector("#cartDrawer");
 const cartItems = document.querySelector("#cartItems");
 const cartCount = document.querySelector("#cartCount");
@@ -87,6 +95,10 @@ const campaignVideo = document.querySelector("#campaignVideo");
 const campaignVideoToggle = document.querySelector("#campaignVideoToggle");
 const campaignVideoToggleIcon = campaignVideoToggle?.querySelector(".campaign-video-toggle-icon");
 const campaignVideoToggleLabel = campaignVideoToggle?.querySelector(".campaign-video-toggle-label");
+
+if (searchInput) searchInput.value = state.search;
+if (headerSearch) headerSearch.value = state.search;
+if (state.search.trim()) document.title = `${state.search.trim().slice(0, 70)} | Santos7 Store`;
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>\"']/g, character => ({
@@ -197,9 +209,9 @@ function formatReferenceLabel(product) {
 
 function renderSalePrice(product, className = "") {
   const referencePrice = getReferencePrice(product);
-  const discount = formatDiscount(product);
-  const referenceLabel = formatReferenceLabel(product);
-  const saving = referencePrice && Number.isFinite(Number(product.price))
+  const discount = product.referenceOnly ? "" : formatDiscount(product);
+  const referenceLabel = product.referenceOnly ? "" : formatReferenceLabel(product);
+  const saving = !product.referenceOnly && referencePrice && Number.isFinite(Number(product.price))
     ? referencePrice - Number(product.price)
     : null;
   const currentPriceClass = Number.isFinite(Number(product.price)) ? "" : "price-pending";
@@ -247,6 +259,7 @@ function availabilityLabel(product) {
 
 function matchesProductFilter(product) {
   return state.filter === "todos"
+    || (state.filter === "ofertas" && hasProductSale(product))
     || product.category === state.filter
     || product.subCategory === state.filter;
 }
@@ -260,16 +273,44 @@ function productToneBrightness(product) {
   return (red + green + blue) / 3;
 }
 
+function normalizeSearchText(value) {
+  return String(value ?? "")
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .replace(/[^\p{Letter}\p{Number}]+/gu, " ")
+    .trim();
+}
+
+function isProductSoldOut(product) {
+  return product.availability === "out_of_stock" || product.stock === 0;
+}
+
+function hasProductSale(product) {
+  return Boolean(!product.referenceOnly && getReferencePrice(product) && formatDiscount(product));
+}
+
+function sortCatalogProducts(first, second) {
+  const saleDifference = Number(hasProductSale(second)) - Number(hasProductSale(first));
+  if (saleDifference) return saleDifference;
+
+  const discountDifference = (getDiscountPercent(second) || 0) - (getDiscountPercent(first) || 0);
+  if (discountDifference) return discountDifference;
+
+  return productToneBrightness(second) - productToneBrightness(first);
+}
+
 function filteredProducts() {
-  const query = state.search.trim().toLowerCase();
+  const query = normalizeSearchText(state.search);
   return catalog.filter(product => {
     if (!matchesProductFilter(product)) return false;
     if (!query) return true;
 
-    const searchable = [
+    const searchable = normalizeSearchText([
       product.name,
       product.brand,
       product.model,
+      product.styleCode,
       product.category,
       product.categoryLabel,
       product.subCategory,
@@ -283,43 +324,34 @@ function filteredProducts() {
       formatDiscount(product),
       product.priceKind,
       availabilityLabel(product)
-    ].join(" ").toLowerCase();
+    ].join(" "));
 
     return searchable.includes(query);
-  }).sort((first, second) => productToneBrightness(second) - productToneBrightness(first));
+  }).sort(sortCatalogProducts);
 }
 
 function renderMedia(product, className = "", imageIndex = 0) {
   const image = product.images[imageIndex];
   if (!image) {
-    return `<span class="media-placeholder ${className}"><span>Foto por confirmar</span></span>`;
+    return `<span class="media-placeholder ${className}" aria-hidden="true"></span>`;
   }
 
   return `<img class="${className}" src="${productImagePath(image)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" width="700" height="795" style="object-fit:${product.imageFit}">`;
 }
 
-function renderProducts() {
-  const visibleProducts = filteredProducts();
-  const countLabel = visibleProducts.length === 1 ? "referencia" : "referencias";
-  productTotal.textContent = `${visibleProducts.length} ${countLabel}`;
-
-  if (!visibleProducts.length) {
-    productGrid.innerHTML = '<p class="no-results">No encontramos ese producto. Prueba con otra búsqueda.</p>';
-    return;
-  }
-
-  productGrid.innerHTML = visibleProducts.map((product, index) => {
+function renderProductCard(product, index) {
     const isFavorite = state.favorites.has(product.id);
     const isPending = !Number.isFinite(product.price);
     const priceClass = isPending ? "price-pending" : "";
     const availability = availabilityLabel(product);
-    const isSoldOut = product.availability === "out_of_stock" || product.stock === 0;
-    const hasSale = Boolean(getReferencePrice(product) && formatDiscount(product));
+    const isSoldOut = isProductSoldOut(product);
+    const hasSale = hasProductSale(product);
     const tagClass = hasSale || product.tagClass ? (product.tagClass || "tag-sale") : "";
     const productTag = isSoldOut ? "Agotado" : (hasSale ? (product.saleLabel || "Oferta Santos7") : (product.tag || (isPending ? "Consultar" : "Original")));
+    const cardClasses = ["product-card", isSoldOut ? "is-sold-out" : "", hasSale ? "product-card-sale" : ""].filter(Boolean).join(" ");
 
     return `
-      <article class="product-card ${isSoldOut ? "is-sold-out" : ""}" style="animation-delay:${index * 45}ms">
+      <article class="${cardClasses}" style="animation-delay:${index * 45}ms">
         <div class="product-image ${isSoldOut ? "product-is-sold-out" : ""}" style="--product-bg:${product.tone || "var(--gray)"}">
           <button class="product-image-trigger" type="button" data-product="${product.id}" aria-label="Ver detalles de ${escapeHtml(product.name)}">
             ${renderMedia(product, "product-image-media")}
@@ -342,7 +374,63 @@ function renderProducts() {
         </div>
       </article>
     `;
-  }).join("");
+}
+
+function renderProducts() {
+  const visibleProducts = filteredProducts();
+  const availableProducts = visibleProducts.filter(product => !isProductSoldOut(product));
+  const soldOutProducts = visibleProducts.filter(isProductSoldOut);
+  const availableLabel = availableProducts.length === 1 ? "disponible" : "disponibles";
+  const soldOutLabel = soldOutProducts.length === 1 ? "referencia agotada" : "referencias agotadas";
+
+  productTotal.textContent = `${availableProducts.length} ${availableLabel}`;
+  productGrid.innerHTML = availableProducts.length
+    ? availableProducts.map(renderProductCard).join("")
+    : '<p class="no-results">No encontramos una pieza disponible con esa búsqueda.</p>';
+
+  if (soldOutSection && soldOutGrid && soldOutTotal) {
+    soldOutSection.hidden = soldOutProducts.length === 0;
+    soldOutTotal.textContent = `${soldOutProducts.length} ${soldOutLabel}`;
+    soldOutGrid.innerHTML = soldOutProducts.map(renderProductCard).join("");
+  }
+}
+
+function syncStructuredData() {
+  if (!catalogStructuredData) return;
+
+  const siteUrl = "https://technova-777.github.io";
+  const itemListElement = catalog
+    .filter(product => !isProductSoldOut(product) && product.images.length)
+    .map((product, index) => {
+      const item = {
+        "@type": "Product",
+        name: product.name,
+        image: product.images.map(image => `${siteUrl}/${productImagePath(image)}`),
+        description: [product.categoryLabel, product.details, product.note].filter(Boolean).join(" · ")
+      };
+
+      if (product.brand) item.brand = { "@type": "Brand", name: product.brand };
+      if (Number.isFinite(product.price)) {
+        item.offers = {
+          "@type": "Offer",
+          url: `${siteUrl}/?q=${encodeURIComponent(product.name)}#catalogo`,
+          priceCurrency: "PEN",
+          price: product.price,
+          availability: "https://schema.org/InStock",
+          itemCondition: "https://schema.org/NewCondition"
+        };
+      }
+
+      return { "@type": "ListItem", position: index + 1, item };
+    });
+
+  catalogStructuredData.textContent = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Catálogo de zapatillas, ropa y accesorios Santos7 Store",
+    numberOfItems: itemListElement.length,
+    itemListElement
+  });
 }
 
 function cartQuantity() {
@@ -392,7 +480,7 @@ function renderCart() {
     return `
       <div class="cart-item">
         <div class="cart-item-image" style="--product-bg:${product.tone || "var(--gray)"}">
-          ${image ? `<img src="${productImagePath(image)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" width="76" height="76" style="object-fit:${product.imageFit}">` : '<span class="media-placeholder"><span>Foto por confirmar</span></span>'}
+          ${image ? `<img src="${productImagePath(image)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" width="76" height="76" style="object-fit:${product.imageFit}">` : '<span class="media-placeholder" aria-hidden="true"></span>'}
         </div>
         <div>
           <h3>${escapeHtml(product.name)}</h3>
@@ -542,7 +630,7 @@ function renderProductGallery(product) {
       <div class="modal-gallery-main" style="--product-bg:${product.tone || "var(--gray)"}">
         ${hasImages
           ? `<img id="modalMainImage" src="${productImagePath(product.images[0])}" alt="${escapeHtml(product.name)}" style="object-fit:${product.imageFit}"><button class="modal-zoom-button" id="modalZoom" type="button" aria-label="Ampliar imagen">Ampliar <span>↗</span></button>`
-          : '<span class="media-placeholder media-placeholder-large"><span>Foto por confirmar</span></span>'}
+          : '<span class="media-placeholder media-placeholder-large" aria-hidden="true"></span>'}
         <span class="modal-product-tag">${escapeHtml(product.tag || (hasImages ? "Original" : "Consultar"))}</span>
       </div>
       ${thumbnails}
@@ -714,17 +802,38 @@ document.querySelectorAll("[data-category-link]").forEach(link => link.addEventL
   renderProducts();
 }));
 
-searchInput?.addEventListener("input", event => {
-  state.search = event.target.value;
+function updateSearch(value, source) {
+  state.search = value;
+  [searchInput, headerSearch].forEach(field => {
+    if (field && field !== source) field.value = value;
+  });
+
+  const url = new URL(window.location.href);
+  if (value.trim()) url.searchParams.set("q", value.trim());
+  else url.searchParams.delete("q");
+  window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  document.title = value.trim() ? `${value.trim().slice(0, 70)} | Santos7 Store` : defaultPageTitle;
   renderProducts();
+}
+
+searchInput?.addEventListener("input", event => updateSearch(event.target.value, event.target));
+headerSearch?.addEventListener("input", event => {
+  updateSearch(event.target.value, event.target);
 });
+headerSearch?.addEventListener("focus", () => catalogSection?.scrollIntoView({ behavior: "smooth", block: "start" }));
 
 document.querySelector(".search-trigger")?.addEventListener("click", () => {
   document.querySelector("#catalogo").scrollIntoView({ behavior: "smooth" });
   setTimeout(() => searchInput?.focus(), 500);
 });
 
-productGrid.addEventListener("click", event => {
+document.querySelectorAll("[data-header-filter]").forEach(link => link.addEventListener("click", () => {
+  state.filter = link.dataset.headerFilter;
+  updateFilterButtons(state.filter);
+  renderProducts();
+}));
+
+catalogSection.addEventListener("click", event => {
   const favoriteButton = event.target.closest("[data-favorite]");
   if (favoriteButton) {
     const id = Number(favoriteButton.dataset.favorite);
@@ -870,5 +979,6 @@ function setupCampaignVideo() {
 }
 
 setupCampaignVideo();
+syncStructuredData();
 renderProducts();
 renderCart();
