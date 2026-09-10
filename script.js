@@ -65,6 +65,9 @@ const soldOutGrid = document.querySelector("#soldOutGrid");
 const soldOutTotal = document.querySelector("#soldOutTotal");
 const searchInput = document.querySelector("#catalogSearch");
 const headerSearch = document.querySelector("#headerSearch");
+const catalogHeading = document.querySelector(".shop-heading");
+const catalogToolbar = document.querySelector(".catalog-toolbar");
+const catalogSummaryText = document.querySelector("#catalogSummaryText");
 const catalogStructuredData = document.querySelector("#catalogStructuredData");
 const defaultPageTitle = document.title;
 const cartDrawer = document.querySelector("#cartDrawer");
@@ -209,20 +212,25 @@ function formatReferenceLabel(product) {
 
 function renderSalePrice(product, className = "") {
   const referencePrice = getReferencePrice(product);
+  const currentPrice = Number(product.price);
+  const isDiscounted = referencePrice && Number.isFinite(currentPrice) && currentPrice < referencePrice;
   const discount = product.referenceOnly ? "" : formatDiscount(product);
   const referenceLabel = product.referenceOnly ? "" : formatReferenceLabel(product);
-  const saving = !product.referenceOnly && referencePrice && Number.isFinite(Number(product.price))
+  const saving = !product.referenceOnly && isDiscounted
     ? referencePrice - Number(product.price)
     : null;
   const currentPriceClass = Number.isFinite(Number(product.price)) ? "" : "price-pending";
+  const referenceMarkup = referenceLabel && referencePrice
+    ? `<small class="sale-reference">${escapeHtml(referenceLabel)}${isDiscounted ? "" : `: ${escapeHtml(money(referencePrice))}`}</small>`
+    : "";
 
   return `
     <span class="sale-price ${className}">
-      ${referencePrice ? `<del>${money(referencePrice)}</del>` : ""}
+      ${isDiscounted ? `<del>${money(referencePrice)}</del>` : ""}
       <strong class="${currentPriceClass}">${escapeHtml(formatProductPrice(product))}</strong>
       ${discount ? `<small class="sale-discount">${escapeHtml(discount)} · ${escapeHtml(product.saleLabel || "Oferta Santos7")}</small>` : ""}
       ${saving ? `<small class="sale-saving">Ahorra ${money(saving)}</small>` : ""}
-      ${referenceLabel && referencePrice ? `<small class="sale-reference">${escapeHtml(referenceLabel)}</small>` : ""}
+      ${referenceMarkup}
     </span>
   `;
 }
@@ -234,7 +242,8 @@ function renderCartPrice(product, quantity = 1) {
     return `<strong>${money(deposit)} para separar</strong><small class="cart-total">Total ${money(product.price * quantity)}</small>`;
   }
   const referencePrice = getReferencePrice(product);
-  return `${referencePrice ? `<del>${money(referencePrice * quantity)}</del>` : ""}<strong>${money(product.price * quantity)}</strong>`;
+  const showReferencePrice = referencePrice && Number(product.price) < referencePrice;
+  return `${showReferencePrice ? `<del>${money(referencePrice * quantity)}</del>` : ""}<strong>${money(product.price * quantity)}</strong>`;
 }
 
 function sizeLabel(product, size) {
@@ -384,6 +393,15 @@ function renderProducts() {
   const soldOutLabel = soldOutProducts.length === 1 ? "referencia agotada" : "referencias agotadas";
 
   productTotal.textContent = `${availableProducts.length} ${availableLabel}`;
+  if (catalogSummaryText) {
+    const filterButton = document.querySelector(`.filter-button[data-filter="${state.filter}"]`);
+    const filterLabel = filterButton?.textContent.trim();
+    catalogSummaryText.textContent = state.search.trim()
+      ? `${availableProducts.length} resultado${availableProducts.length === 1 ? "" : "s"} para “${state.search.trim()}”`
+      : state.filter === "todos"
+        ? "Ofertas y stock disponible primero"
+        : `${filterLabel || "Catálogo"} · ${availableProducts.length} disponible${availableProducts.length === 1 ? "" : "s"}`;
+  }
   productGrid.innerHTML = availableProducts.length
     ? availableProducts.map(renderProductCard).join("")
     : '<p class="no-results">No encontramos una pieza disponible con esa búsqueda.</p>';
@@ -919,6 +937,13 @@ mainNav?.querySelectorAll("a").forEach(link => link.addEventListener("click", ()
   mainNav.classList.remove("is-open");
   menuTrigger.setAttribute("aria-expanded", "false");
 }));
+
+if (catalogToolbar && catalogHeading && "IntersectionObserver" in window) {
+  const catalogHeadingObserver = new IntersectionObserver(([entry]) => {
+    catalogToolbar.classList.toggle("is-condensed", !entry.isIntersecting);
+  }, { rootMargin: "-82px 0px 0px", threshold: 0 });
+  catalogHeadingObserver.observe(catalogHeading);
+}
 
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") {

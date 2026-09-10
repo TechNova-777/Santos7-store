@@ -182,7 +182,7 @@ button:disabled { cursor: not-allowed; opacity: .45; }
 .today-copy > p:not(.eyebrow) { font-size: 13px; line-height: 1.65; margin: 19px 0 25px; }
 
 /* Catalog */
-.shop-section { padding-top: clamp(100px, 13vw, 175px); }
+.shop-section { padding-top: clamp(100px, 13vw, 175px); scroll-margin-top: 88px; }
 .shop-status { align-items: end; display: flex; gap: 7px; padding-bottom: 6px; }
 .shop-status > span:not(.status-dot) { color: var(--muted); font-family: var(--font-display); font-size: 10px; text-transform: uppercase; }
 .shop-status small { color: var(--muted); font-size: 9px; }
@@ -196,12 +196,13 @@ button:disabled { cursor: not-allowed; opacity: .45; }
 .search-box input::placeholder { color: var(--muted); }
 .catalog-active-summary { align-items: center; color: var(--accent-dark); display: flex; font-size: 9px; font-weight: 800; gap: 9px; letter-spacing: .1em; padding-top: 25px; text-transform: uppercase; }
 .catalog-active-summary-mark { background: var(--accent); border-radius: 50%; box-shadow: 0 0 0 5px var(--accent-soft); height: 7px; width: 7px; }
+.catalog-active-summary > span:nth-child(2) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .catalog-active-summary-line { background: var(--line); flex: 1; height: 1px; }
 .filter-button-sale { color: var(--accent-dark); }
 .product-grid { display: grid; gap: 44px 16px; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-top: 31px; }
 .product-card-sale { border-color: rgba(240,68,45,.3); box-shadow: 0 10px 25px rgba(240,68,45,.08); }
 .product-card-sale:hover { border-color: rgba(240,68,45,.58); box-shadow: 0 18px 38px rgba(240,68,45,.16); }
-.product-card { animation: product-in .35s ease both; min-width: 0; }
+.product-card { animation: product-in .35s ease both; display: flex; flex-direction: column; min-width: 0; }
 @keyframes product-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 .product-image { aspect-ratio: .88; background: var(--product-bg, var(--surface-strong)); cursor: pointer; overflow: hidden; position: relative; }
 .product-image img { height: 100%; transition: transform .45s ease; width: 100%; }
@@ -218,7 +219,7 @@ button:disabled { cursor: not-allowed; opacity: .45; }
 .product-tag.tag-out { background: var(--ink); color: var(--paper); }
 .favorite-button { align-items: center; background: var(--paper); color: var(--ink); display: flex; font-size: 19px; height: 34px; justify-content: center; position: absolute; right: 12px; top: 12px; transition: color .2s ease, transform .2s ease; width: 34px; z-index: 2; }
 .favorite-button:hover, .favorite-button.is-favorite { color: var(--accent); transform: scale(1.1); }
-.product-info { padding-top: 15px; }
+.product-info { display: flex; flex: 1; flex-direction: column; padding-top: 15px; }
 .product-line { align-items: start; display: flex; gap: 7px; justify-content: space-between; }
 .product-line > div:first-child { min-width: 0; }
 .product-info h3 { font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: -.04em; line-height: 1.1; text-transform: uppercase; }
@@ -235,7 +236,7 @@ button:disabled { cursor: not-allowed; opacity: .45; }
 .sale-saving, .sale-reference { color: var(--muted); font-size: 8px; line-height: 1.15; }
 .sale-saving { color: var(--accent-dark); font-weight: 800; }
 .sale-reference { background: var(--accent-soft); padding: 2px 4px; }
-.add-button { align-items: center; background: var(--ink); color: var(--paper); display: flex; font-size: 10px; font-weight: 800; justify-content: space-between; letter-spacing: .06em; margin-top: 15px; min-height: 42px; padding: 0 13px; text-transform: uppercase; transition: background .2s ease, transform .2s ease; width: 100%; }
+.add-button { align-items: center; background: var(--ink); color: var(--paper); display: flex; font-size: 10px; font-weight: 800; justify-content: space-between; letter-spacing: .06em; margin-top: auto; min-height: 42px; padding: 0 13px; text-transform: uppercase; transition: background .2s ease, transform .2s ease; width: 100%; }
 .add-button span { color: #f3a99f; font-size: 17px; transition: transform .2s ease; }
 .add-button:hover { background: var(--accent); transform: translateY(-2px); }
 .add-button:hover span { transform: translateX(4px); }
@@ -731,7 +732,7 @@ button:disabled { cursor: not-allowed; opacity: .45; }
 .product-note { font-size: 9px; margin-top: 7px; }
 .sale-price > strong { font-size: 18px; }
 .sale-price > del { font-size: 10px; }
-.add-button { border-radius: 10px; box-shadow: 0 7px 15px rgba(21,23,27,.12); font-size: 9px; margin: 18px 0 0; min-height: 48px; padding-left: 16px; padding-right: 15px; }
+.add-button { border-radius: 10px; box-shadow: 0 7px 15px rgba(21,23,27,.12); font-size: 9px; margin: auto 0 0; min-height: 48px; padding-left: 16px; padding-right: 15px; }
 .add-button:hover { box-shadow: 0 10px 18px rgba(240,68,45,.2); }
 .add-button span { font-size: 18px; }
 
@@ -756,7 +757,7 @@ button:disabled { cursor: not-allowed; opacity: .45; }
   .product-stock { font-size: 7px; padding: 4px 6px; }
   .product-note { font-size: 8px; }
   .sale-price > strong { font-size: 14px; }
-  .add-button { border-radius: 8px; font-size: 8px; margin-top: 14px; min-height: 42px; padding-left: 11px; padding-right: 10px; }
+  .add-button { border-radius: 8px; font-size: 8px; margin: auto 0 0; min-height: 42px; padding-left: 11px; padding-right: 10px; }
   .whatsapp-float { bottom: 16px; height: 58px; right: 16px; width: 58px; }
 }
 
@@ -976,6 +977,9 @@ button:disabled { cursor: not-allowed; opacity: .45; }
   .filter-button { flex: 0 0 auto; white-space: nowrap; }
   .search-box { width: 100%; }
   .catalog-active-summary { font-size: 8px; gap: 8px; padding-top: 19px; }
+  .catalog-toolbar.is-condensed { padding: 8px; }
+  .catalog-toolbar.is-condensed .filter-list { display: none; }
+  .catalog-toolbar.is-condensed .search-box { min-height: 40px; }
   .sold-out-section { margin-top: 78px; padding-top: 34px; }
   .sold-out-heading { align-items: flex-start; flex-direction: column; gap: 11px; }
   .sold-out-heading h3 { font-size: clamp(38px, 12vw, 58px); }

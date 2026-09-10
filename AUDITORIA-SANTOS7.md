@@ -2,7 +2,7 @@
 
 ## Resultado
 
-- Catálogo revisado: **65 referencias activas**.
+- Catálogo revisado: **68 referencias activas**.
 - IDs únicos: **sí**.
 - Rutas de imágenes comprobadas: **todas existen**.
 - Stock por talla comprobado en las referencias con desglose; las nuevas prendas sin cantidad exacta mantienen esa información pendiente.
@@ -54,6 +54,17 @@ Cambios destacados:
 - La grabación confirmó el precio del **ID 20 — Polo**: se corrigió de S/ 69 a **S/ 89**.
 - Se retiraron del catálogo activo por repetidos o con datos/precio incorrectos: **ID 8 — Polo Puma**, **ID 49 — Nike Victori One Shower Slide**, **ID 54 — Nike Victori One Slide**, **ID 58 — Gorra BMW Motorsport** e **ID 59 — Gorra Guess monogram**. Sus imágenes y objetos originales se conservaron en `products.js` para poder reactivarlos si se confirman.
 - Los registros de zapatillas sin talla EUR legible no se eliminaron automáticamente: permanecen como consulta con “Talla por confirmar” para no inventar datos que la grabación no muestra.
+
+## Nuevas referencias incorporadas
+
+| ID | Modelo oficial | Talla | Precio oficial | Precio Santos7 | Nota |
+| --- | --- | --- | ---: | ---: | --- |
+| 5 | Nike Sportswear Club Cotton Tee · AR4997-538 | M, L | S/ 79.90 | S/ 80 | Polo Nike Algodón |
+| 73 | Jordan Polo Jumpman bordado · IF5566-010 | S | S/ 119.90 | S/ 100 | Polo Jordan 💎 |
+| 82 | Puma Essentials No.1 Logo Shorts · 682594_01 | M | S/ 89 | S/ 65 | Short Puma Deportivo |
+| 83 | Nike P-6000 · CD6404-106 | EUR 38.5 | S/ 549.90 | S/ 289.90 | Box cortado |
+| 84 | Jordan Dri-FIT Sport Diamond Shorts · DQ7334-405 | L | S/ 199.90 | S/ 130 | Última 🚨 |
+| 85 | Air Jordan 1 Low Retro · 553558-141 | Por confirmar | S/ 579.90 | S/ 339 | Box cortado |
 
 ## Validación de la grabación reciente
 
