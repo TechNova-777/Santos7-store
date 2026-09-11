@@ -768,11 +768,11 @@ const newSneakers = [
     category: "calzado",
     subCategory: "zapatillas",
     categoryLabel: "Zapatillas · Nike",
-    details: "Talla EUR 39",
+    details: "Tallas EUR 42 · 42.5 · 43",
     sizeSystem: "EUR",
-    sizes: ["39"],
+    sizes: ["42", "42.5", "43"],
     stock: 1,
-    stockBySize: { "39": 1 },
+    stockBySize: null,
     price: 385,
     referencePrice: 549.90,
     referenceType: "official",
@@ -957,9 +957,9 @@ const consultableProducts = [
     category: "calzado",
     subCategory: "sandalias",
     categoryLabel: "Sandalias · Adidas",
-    details: "Talla EUR 39",
+    details: "Tallas EUR 42 y 43",
     sizeSystem: "EUR",
-    sizes: ["39"],
+    sizes: ["42", "43"],
     stock: null,
     stockBySize: null,
     price: 95,
@@ -1872,12 +1872,12 @@ const incomingProducts = [
 // La grabación confirmó estas referencias como repetidas o con precio/datos
 // incorrectos. Se conservan sus imágenes y objetos de origen, pero no se
 // muestran como stock activo hasta volver a confirmarlos.
-const removedProductIds = new Set([2, 8, 35, 47, 49, 54, 58, 59, 65, 81]);
+const removedProductIds = new Set([2, 8, 35, 47, 49, 54, 58, 59, 65]);
 
-// Las capturas AREGLO 3, 4, 5, 8 y 12 confirman estos cuatro agotados.
+// Las capturas AREGLO 3, 4, 5 y 12 confirman estas seis referencias agotadas.
 // Se fuerza el estado aquí para que siempre aparezcan en la sección Agotados,
 // aunque una ficha antigua conserve precio o disponibilidad anterior.
-const confirmedSoldOutProductIds = new Set([7, 9, 10, 12]);
+const confirmedSoldOutProductIds = new Set([7, 9, 10, 12, 36, 81]);
 
 export const products = [...latestProducts, ...incomingProducts, ...existingProducts, ...newSneakers, ...consultableProducts]
   .map((product) => confirmedSoldOutProductIds.has(product.id)

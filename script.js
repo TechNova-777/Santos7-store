@@ -1,4 +1,4 @@
-import { products } from "./products.js?v=20260910-10";
+import { products } from "./products.js?v=20260911-13";
 
 const currencyFormatter = new Intl.NumberFormat("es-PE", {
   minimumFractionDigits: 0,
@@ -9,12 +9,6 @@ const categoryFallbacks = {
   calzado: "zapatillas",
   ropa: "polos",
   accesorios: "otros"
-};
-
-const imageTextOverlays = {
-  33: "talla 43-44.5 precio 135",
-  36: "talla 39",
-  63: "talla S"
 };
 
 function normalizeProduct(product) {
@@ -56,7 +50,12 @@ function normalizeProduct(product) {
 const catalog = products.map(normalizeProduct);
 const initialUrlParams = new URLSearchParams(window.location.search);
 const initialSearch = initialUrlParams.get("q") || "";
-const initialFilter = initialUrlParams.get("filter") === "agotados" ? "agotados" : "todos";
+const validCatalogFilters = new Set([
+  "todos", "ofertas", "agotados", "calzado", "zapatillas", "sandalias",
+  "ropa", "polos", "shorts", "accesorios", "gorras", "mochilas"
+]);
+const requestedFilter = initialUrlParams.get("filter") || "todos";
+const initialFilter = validCatalogFilters.has(requestedFilter) ? requestedFilter : "todos";
 
 const state = {
   filter: initialFilter,
@@ -383,10 +382,8 @@ function renderProductCard(product, index) {
     const productTag = isSoldOut ? "Agotado" : (hasSale ? (product.saleLabel || "Oferta Santos7") : (product.tag || (isPending ? "Consultar" : "Original")));
     const cardClasses = ["product-card", isSoldOut ? "is-sold-out" : "", hasSale ? "product-card-sale" : ""].filter(Boolean).join(" ");
     const detailsLabel = productDetailsLabel(product);
-    const imageText = isSoldOut ? "agotado" : (imageTextOverlays[product.id] || "");
-    const imageTextClass = isSoldOut ? "product-sold-out-stamp" : "product-image-copy";
-    const imageTextOverlay = imageText
-      ? `<span class="${imageTextClass}" aria-label="${escapeHtml(imageText)}">${escapeHtml(imageText)}</span>`
+    const imageTextOverlay = isSoldOut
+      ? '<span class="product-sold-out-stamp" aria-label="Agotado">agotado</span>'
       : "";
 
     return `
@@ -421,7 +418,7 @@ function renderProducts() {
   const showingSoldOutOnly = state.filter === "agotados";
   const availableProducts = visibleProducts.filter(product => !isProductSoldOut(product));
   const soldOutProducts = visibleProducts.filter(isProductSoldOut);
-  const displayedProducts = showingSoldOutOnly ? soldOutProducts : visibleProducts;
+  const displayedProducts = showingSoldOutOnly ? soldOutProducts : availableProducts;
   const availableLabel = availableProducts.length === 1 ? "disponible" : "disponibles";
   const soldOutLabel = soldOutProducts.length === 1 ? "referencia agotada" : "referencias agotadas";
 
@@ -442,12 +439,14 @@ function renderProducts() {
   }
   productGrid.innerHTML = displayedProducts.length
     ? displayedProducts.map(renderProductCard).join("")
-    : '<p class="no-results">No encontramos una pieza disponible con esa búsqueda.</p>';
+    : `<p class="no-results">${showingSoldOutOnly ? "No encontramos referencias agotadas con esa búsqueda." : "No encontramos una pieza disponible con esa búsqueda."}</p>`;
 
   if (soldOutSection && soldOutGrid && soldOutTotal) {
-    soldOutSection.hidden = true;
+    soldOutSection.hidden = showingSoldOutOnly || soldOutProducts.length === 0;
     soldOutTotal.textContent = `${soldOutProducts.length} ${soldOutLabel}`;
-    soldOutGrid.innerHTML = "";
+    soldOutGrid.innerHTML = showingSoldOutOnly || !soldOutProducts.length
+      ? ""
+      : soldOutProducts.map(renderProductCard).join("");
   }
 }
 
@@ -851,24 +850,29 @@ function updateFilterButtons(filter) {
   });
 }
 
+function setCatalogFilter(filter, { scroll = false } = {}) {
+  if (!validCatalogFilters.has(filter)) return;
+
+  state.filter = filter;
+  const url = new URL(window.location.href);
+  if (filter === "todos") url.searchParams.delete("filter");
+  else url.searchParams.set("filter", filter);
+  window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  updateFilterButtons(filter);
+  renderProducts();
+
+  if (scroll) catalogSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 document.querySelectorAll("[data-filter]").forEach(button => {
   button.setAttribute("aria-pressed", String(button.classList.contains("is-active")));
   button.addEventListener("click", () => {
-    state.filter = button.dataset.filter;
-    const url = new URL(window.location.href);
-    if (state.filter === "todos") url.searchParams.delete("filter");
-    else url.searchParams.set("filter", state.filter);
-    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
-    updateFilterButtons(state.filter);
-    renderProducts();
-    document.querySelector("#catalogo").scrollIntoView({ behavior: "smooth", block: "start" });
+    setCatalogFilter(button.dataset.filter, { scroll: true });
   });
 });
 
 document.querySelectorAll("[data-category-link]").forEach(link => link.addEventListener("click", () => {
-  state.filter = link.dataset.categoryLink;
-  updateFilterButtons(state.filter);
-  renderProducts();
+  setCatalogFilter(link.dataset.categoryLink);
 }));
 
 function updateSearch(value, source) {
@@ -897,9 +901,7 @@ document.querySelector(".search-trigger")?.addEventListener("click", () => {
 });
 
 document.querySelectorAll("[data-header-filter]").forEach(link => link.addEventListener("click", () => {
-  state.filter = link.dataset.headerFilter;
-  updateFilterButtons(state.filter);
-  renderProducts();
+  setCatalogFilter(link.dataset.headerFilter, { scroll: true });
 }));
 
 catalogSection.addEventListener("click", event => {
