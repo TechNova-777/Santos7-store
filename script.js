@@ -1,4 +1,4 @@
-import { products } from "./products.js";
+import { products } from "./products.js?v=20260910-2";
 
 const currencyFormatter = new Intl.NumberFormat("es-PE", {
   minimumFractionDigits: 0,
@@ -295,6 +295,10 @@ function isProductSoldOut(product) {
   return product.availability === "out_of_stock" || product.stock === 0;
 }
 
+function isInquiryProduct(product) {
+  return product.availability === "inquiry" || !Number.isFinite(product.price);
+}
+
 function hasProductSale(product) {
   return Boolean(!product.referenceOnly && getReferencePrice(product) && formatDiscount(product));
 }
@@ -351,6 +355,7 @@ function renderMedia(product, className = "", imageIndex = 0) {
 function renderProductCard(product, index) {
     const isFavorite = state.favorites.has(product.id);
     const isPending = !Number.isFinite(product.price);
+    const isInquiry = isInquiryProduct(product);
     const priceClass = isPending ? "price-pending" : "";
     const availability = availabilityLabel(product);
     const isSoldOut = isProductSoldOut(product);
@@ -374,12 +379,12 @@ function renderProductCard(product, index) {
               <p class="product-category">${escapeHtml(product.categoryLabel)}</p>
               <h3>${escapeHtml(product.name)}</h3>
               ${product.details ? `<p class="product-details">${escapeHtml(product.details)}</p>` : ""}
-              ${availability ? `<p class="product-stock ${isPending ? "stock-pending" : ""}"><span class="stock-dot"></span>${escapeHtml(availability)}</p>` : ""}
+              ${availability ? `<p class="product-stock ${isInquiry ? "stock-pending" : ""}"><span class="stock-dot"></span>${escapeHtml(availability)}</p>` : ""}
               ${product.note ? `<p class="product-note">${escapeHtml(product.note)}</p>` : ""}
             </div>
             ${renderSalePrice(product, `product-price ${priceClass}`)}
           </div>
-          <button class="add-button ${isSoldOut ? "is-disabled" : ""}" type="button" data-product="${product.id}">${isSoldOut ? "Ver detalles · agotado" : (isPending ? "Consultar pieza" : "Comprar ahora")}<span>↗</span></button>
+          <button class="add-button ${isSoldOut ? "is-disabled" : ""}" type="button" data-product="${product.id}">${isSoldOut ? "Ver detalles · agotado" : (isInquiry ? "Consultar pieza" : "Comprar ahora")}<span>↗</span></button>
         </div>
       </article>
     `;
@@ -416,7 +421,7 @@ function renderProducts() {
 function syncStructuredData() {
   if (!catalogStructuredData) return;
 
-  const siteUrl = "https://technova-777.github.io/Santos7-store";
+  const siteUrl = "https://santos7store.vercel.app";
   const itemListElement = catalog
     .filter(product => !isProductSoldOut(product) && product.images.length)
     .map((product, index) => {
@@ -537,7 +542,7 @@ function addToCart(id, size, quantity = 1) {
   else state.cart.push({ id, size: cartSize, qty: quantity });
   saveCart();
   renderCart();
-  showToast(Number.isFinite(product.price) ? `${product.name} se añadió a tu bolsa` : `${product.name} se añadió para consultar`);
+  showToast(isInquiryProduct(product) ? `${product.name} se añadió para confirmar` : `${product.name} se añadió a tu bolsa`);
 }
 
 function changeQuantity(id, size, change) {
@@ -615,6 +620,7 @@ function productMessage(product, size, quantity) {
 function cartMessage() {
   const lines = ["Hola Santos7 Store, quiero confirmar este pedido:"];
   let pendingCount = 0;
+  let inquiryCount = 0;
   let confirmedSubtotal = 0;
 
   state.cart.forEach(item => {
@@ -622,6 +628,7 @@ function cartMessage() {
     if (!product) return;
     const pending = !Number.isFinite(product.price);
     if (pending) pendingCount += item.qty;
+    if (isInquiryProduct(product)) inquiryCount += item.qty;
     else confirmedSubtotal += product.price * item.qty;
     const discount = formatDiscount(product);
     lines.push(`- ${product.name} | Talla: ${sizeLabel(product, item.size)} | Cantidad: ${item.qty} | Precio Santos7: ${formatPriceForMessage(product, item.qty)}${discount ? ` | ${discount} Oferta Santos7` : ""}`);
@@ -629,6 +636,7 @@ function cartMessage() {
 
   lines.push(`Subtotal confirmado: ${money(confirmedSubtotal)}`);
   if (pendingCount) lines.push(`Piezas con precio por confirmar: ${pendingCount}`);
+  if (inquiryCount) lines.push(`Piezas con disponibilidad por confirmar: ${inquiryCount}`);
   lines.push("Quiero coordinar la entrega.");
   return lines.join("\n");
 }
@@ -668,12 +676,13 @@ function updateModalLinks() {
   const quantityPlus = productModalBody.querySelector('[data-modal-quantity="1"]');
   const available = availableUnits(product, activeProductSize);
   const isSoldOut = product.availability === "out_of_stock" || product.stock === 0;
+  const inquiry = isInquiryProduct(product);
 
   if (Number.isFinite(available)) {
     activeProductQuantity = Math.min(activeProductQuantity, Math.max(1, available));
   }
   if (modalWhatsapp) modalWhatsapp.href = whatsappUrl(productMessage(product, activeProductSize, activeProductQuantity));
-  if (modalWhatsappText) modalWhatsappText.textContent = isSoldOut ? "Consultar disponibilidad" : (Number.isFinite(product.price) ? "Comprar por WhatsApp" : "Consultar por WhatsApp");
+  if (modalWhatsappText) modalWhatsappText.textContent = isSoldOut || inquiry ? "Consultar por WhatsApp" : "Comprar por WhatsApp";
   if (modalQuantity) modalQuantity.textContent = activeProductQuantity;
   if (modalStock) {
     modalStock.textContent = isSoldOut
@@ -761,6 +770,7 @@ function openProduct(id) {
     ? `<div class="modal-field"><div class="modal-field-label"><span>Elige tu talla</span><small>${product.sizeSystem ? `Tallas ${escapeHtml(product.sizeSystem)}` : "Selecciona una opción"}</small></div><div class="size-options" id="modalSizeList">${product.sizes.map((size, index) => `<button class="size-button ${index === 0 ? "is-selected" : ""}" type="button" data-modal-size="${escapeHtml(size)}" aria-pressed="${index === 0}">${escapeHtml(size)}</button>`).join("")}</div></div>`
     : `<div class="modal-field"><div class="modal-field-label"><span>Talla</span><small>Confirma disponibilidad por WhatsApp</small></div></div>`;
   const pending = !Number.isFinite(product.price);
+  const inquiry = isInquiryProduct(product);
   const isSoldOut = product.availability === "out_of_stock" || product.stock === 0;
 
   productModalBody.innerHTML = `
@@ -780,6 +790,10 @@ function openProduct(id) {
       </div>
     </div>
   `;
+  if (inquiry && !isSoldOut) {
+    productModalBody.querySelector("#modalAddText").textContent = "Añadir a consulta";
+    productModalBody.querySelector("#modalWhatsappText").textContent = "Consultar por WhatsApp";
+  }
   updateModalLinks();
   productModal.classList.add("is-open");
   productModal.setAttribute("aria-hidden", "false");
