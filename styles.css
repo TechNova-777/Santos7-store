@@ -210,8 +210,9 @@ button:disabled { cursor: not-allowed; opacity: .45; }
 .product-image { aspect-ratio: .88; background: var(--product-bg, var(--surface-strong)); cursor: pointer; overflow: hidden; position: relative; }
 .product-image img { height: 100%; transition: transform .45s ease; width: 100%; }
 .product-card:hover .product-image img { transform: scale(1.05); }
-.product-image.product-is-sold-out img { filter: grayscale(.85); opacity: .62; }
+.product-image.product-is-sold-out img { filter: none; opacity: .92; }
 .product-image.product-is-sold-out .product-image-trigger { cursor: default; }
+.product-sold-out-stamp { background: var(--paper); border-radius: 999px; bottom: 15%; color: var(--ink); font-family: var(--font-display); font-size: clamp(20px, 3.6vw, 46px); font-weight: 900; left: 6%; letter-spacing: -.08em; line-height: .85; padding: 8px 15px 10px; position: absolute; text-transform: lowercase; z-index: 2; }
 .product-image-trigger { background: transparent; display: block; height: 100%; padding: 0; width: 100%; }
 .product-image-trigger:focus-visible { outline-offset: -4px; }
 .product-image-media { display: block; height: 100%; width: 100%; }
@@ -245,6 +246,7 @@ button:disabled { cursor: not-allowed; opacity: .45; }
 .add-button:hover span { transform: translateX(4px); }
 .add-button.is-disabled { background: var(--surface-strong); color: var(--muted); }
 .add-button.is-disabled span { color: var(--muted); }
+.add-button.is-disabled { cursor: not-allowed; opacity: .82; }
 .product-card.is-sold-out .product-info h3 { color: var(--muted); }
 .no-results { color: var(--muted); font-size: 14px; grid-column: 1 / -1; padding: 50px 0; text-align: center; }
 .sold-out-section { border-top: 1px solid var(--line); margin-top: clamp(78px, 10vw, 145px); padding-top: clamp(36px, 5vw, 64px); }

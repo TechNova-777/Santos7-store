@@ -1,4 +1,4 @@
-import { products } from "./products.js?v=20260910-5";
+import { products } from "./products.js?v=20260910-6";
 
 const currencyFormatter = new Intl.NumberFormat("es-PE", {
   minimumFractionDigits: 0,
@@ -299,6 +299,15 @@ function isProductSoldOut(product) {
   return product.availability === "out_of_stock" || product.stock === 0;
 }
 
+function productDetailsLabel(product) {
+  if (isProductSoldOut(product) && product.sizes.length) {
+    const sizeWord = product.sizes.length === 1 ? "Talla" : "Tallas";
+    const sizeSystem = product.sizeSystem ? `${product.sizeSystem} ` : "";
+    return `${sizeWord} ${sizeSystem}${product.sizes.join(" · ")}`;
+  }
+  return product.details || "";
+}
+
 function isInquiryProduct(product) {
   return product.availability === "inquiry" || !Number.isFinite(product.price);
 }
@@ -367,6 +376,8 @@ function renderProductCard(product, index) {
     const tagClass = hasSale || product.tagClass ? (product.tagClass || "tag-sale") : "";
     const productTag = isSoldOut ? "Agotado" : (hasSale ? (product.saleLabel || "Oferta Santos7") : (product.tag || (isPending ? "Consultar" : "Original")));
     const cardClasses = ["product-card", isSoldOut ? "is-sold-out" : "", hasSale ? "product-card-sale" : ""].filter(Boolean).join(" ");
+    const detailsLabel = productDetailsLabel(product);
+    const soldOutStamp = isSoldOut ? '<span class="product-sold-out-stamp" aria-label="Producto agotado">agotado</span>' : "";
 
     return `
       <article class="${cardClasses}" style="animation-delay:${index * 45}ms">
@@ -375,6 +386,7 @@ function renderProductCard(product, index) {
             ${renderMedia(product, "product-image-media")}
           </button>
           <span class="product-tag ${tagClass}">${escapeHtml(productTag)}</span>
+          ${soldOutStamp}
           <button class="favorite-button ${isFavorite ? "is-favorite" : ""}" type="button" data-favorite="${product.id}" aria-label="${isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}" aria-pressed="${isFavorite}">${isFavorite ? "♥" : "♡"}</button>
         </div>
         <div class="product-info">
@@ -382,13 +394,13 @@ function renderProductCard(product, index) {
             <div>
               <p class="product-category">${escapeHtml(product.categoryLabel)}</p>
               <h3>${escapeHtml(product.name)}</h3>
-              ${product.details ? `<p class="product-details">${escapeHtml(product.details)}</p>` : ""}
-              ${availability ? `<p class="product-stock ${isInquiry ? "stock-pending" : ""}"><span class="stock-dot"></span>${escapeHtml(availability)}</p>` : ""}
+              ${detailsLabel ? `<p class="product-details">${escapeHtml(detailsLabel)}</p>` : ""}
+              ${!isSoldOut && availability ? `<p class="product-stock ${isInquiry ? "stock-pending" : ""}"><span class="stock-dot"></span>${escapeHtml(availability)}</p>` : ""}
               ${product.note ? `<p class="product-note">${escapeHtml(product.note)}</p>` : ""}
             </div>
             ${renderSalePrice(product, `product-price ${priceClass}`)}
           </div>
-          <button class="add-button ${isSoldOut ? "is-disabled" : ""}" type="button" data-product="${product.id}">${isSoldOut ? "Ver detalles · agotado" : (isInquiry ? "Consultar pieza" : "Comprar ahora")}<span>↗</span></button>
+          <button class="add-button ${isSoldOut ? "is-disabled" : ""}" type="button" data-product="${product.id}" ${isSoldOut ? "disabled aria-disabled=\"true\"" : ""}>${isSoldOut ? "Agotado" : (isInquiry ? "Consultar pieza" : "Comprar ahora")}<span>${isSoldOut ? "—" : "↗"}</span></button>
         </div>
       </article>
     `;
@@ -399,7 +411,7 @@ function renderProducts() {
   const showingSoldOutOnly = state.filter === "agotados";
   const availableProducts = visibleProducts.filter(product => !isProductSoldOut(product));
   const soldOutProducts = visibleProducts.filter(isProductSoldOut);
-  const displayedProducts = showingSoldOutOnly ? soldOutProducts : availableProducts;
+  const displayedProducts = showingSoldOutOnly ? soldOutProducts : visibleProducts;
   const availableLabel = availableProducts.length === 1 ? "disponible" : "disponibles";
   const soldOutLabel = soldOutProducts.length === 1 ? "referencia agotada" : "referencias agotadas";
 
@@ -423,9 +435,9 @@ function renderProducts() {
     : '<p class="no-results">No encontramos una pieza disponible con esa búsqueda.</p>';
 
   if (soldOutSection && soldOutGrid && soldOutTotal) {
-    soldOutSection.hidden = showingSoldOutOnly || soldOutProducts.length === 0;
+    soldOutSection.hidden = true;
     soldOutTotal.textContent = `${soldOutProducts.length} ${soldOutLabel}`;
-    soldOutGrid.innerHTML = showingSoldOutOnly ? "" : soldOutProducts.map(renderProductCard).join("");
+    soldOutGrid.innerHTML = "";
   }
 }
 
