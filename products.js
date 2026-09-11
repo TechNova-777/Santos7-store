@@ -975,7 +975,7 @@ const consultableProducts = [
     imageFit: "contain",
     tag: "Oferta Santos7",
     tagClass: "tag-sale",
-    note: "Precio adidas de referencia · talla por confirmar",
+    note: "Precio adidas de referencia · talla EUR 39",
     tone: "#e8ecef"
   },
   {
@@ -1747,7 +1747,7 @@ const latestProducts = [
     imageFit: "contain",
     tag: "Oferta Santos7",
     tagClass: "tag-sale",
-    note: "Talla EUR 39",
+    note: null,
     tone: "#e8edf1"
   }
 ];
