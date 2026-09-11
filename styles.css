@@ -213,6 +213,7 @@ button:disabled { cursor: not-allowed; opacity: .45; }
 .product-image.product-is-sold-out img { filter: none; opacity: .92; }
 .product-image.product-is-sold-out .product-image-trigger { cursor: default; }
 .product-sold-out-stamp { background: var(--paper); border-radius: 999px; bottom: 15%; color: var(--ink); font-family: var(--font-display); font-size: clamp(20px, 3.6vw, 46px); font-weight: 900; left: 6%; letter-spacing: -.08em; line-height: .85; padding: 8px 15px 10px; position: absolute; text-transform: lowercase; z-index: 2; }
+.product-image-copy { background: var(--paper); border-radius: 999px; bottom: 14%; color: var(--ink); font-family: var(--font-display); font-size: clamp(14px, 2.8vw, 32px); font-weight: 900; left: 6%; letter-spacing: -.07em; line-height: .9; padding: 7px 13px 9px; position: absolute; text-transform: lowercase; z-index: 2; }
 .product-image-trigger { background: transparent; display: block; height: 100%; padding: 0; width: 100%; }
 .product-image-trigger:focus-visible { outline-offset: -4px; }
 .product-image-media { display: block; height: 100%; width: 100%; }

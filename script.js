@@ -1,4 +1,4 @@
-import { products } from "./products.js?v=20260910-6";
+import { products } from "./products.js?v=20260910-7";
 
 const currencyFormatter = new Intl.NumberFormat("es-PE", {
   minimumFractionDigits: 0,
@@ -9,6 +9,12 @@ const categoryFallbacks = {
   calzado: "zapatillas",
   ropa: "polos",
   accesorios: "otros"
+};
+
+const imageTextOverlays = {
+  33: "talla 43-44.5 precio 135",
+  36: "talla 39",
+  63: "talla S"
 };
 
 function normalizeProduct(product) {
@@ -377,7 +383,11 @@ function renderProductCard(product, index) {
     const productTag = isSoldOut ? "Agotado" : (hasSale ? (product.saleLabel || "Oferta Santos7") : (product.tag || (isPending ? "Consultar" : "Original")));
     const cardClasses = ["product-card", isSoldOut ? "is-sold-out" : "", hasSale ? "product-card-sale" : ""].filter(Boolean).join(" ");
     const detailsLabel = productDetailsLabel(product);
-    const soldOutStamp = isSoldOut ? '<span class="product-sold-out-stamp" aria-label="Producto agotado">agotado</span>' : "";
+    const imageText = isSoldOut ? "agotado" : (imageTextOverlays[product.id] || "");
+    const imageTextClass = isSoldOut ? "product-sold-out-stamp" : "product-image-copy";
+    const imageTextOverlay = imageText
+      ? `<span class="${imageTextClass}" aria-label="${escapeHtml(imageText)}">${escapeHtml(imageText)}</span>`
+      : "";
 
     return `
       <article class="${cardClasses}" style="animation-delay:${index * 45}ms">
@@ -386,7 +396,7 @@ function renderProductCard(product, index) {
             ${renderMedia(product, "product-image-media")}
           </button>
           <span class="product-tag ${tagClass}">${escapeHtml(productTag)}</span>
-          ${soldOutStamp}
+          ${imageTextOverlay}
           <button class="favorite-button ${isFavorite ? "is-favorite" : ""}" type="button" data-favorite="${product.id}" aria-label="${isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}" aria-pressed="${isFavorite}">${isFavorite ? "♥" : "♡"}</button>
         </div>
         <div class="product-info">
