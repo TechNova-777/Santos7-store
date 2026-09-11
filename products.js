@@ -1872,7 +1872,7 @@ const incomingProducts = [
 // La grabación confirmó estas referencias como repetidas o con precio/datos
 // incorrectos. Se conservan sus imágenes y objetos de origen, pero no se
 // muestran como stock activo hasta volver a confirmarlos.
-const removedProductIds = new Set([2, 8, 35, 47, 49, 54, 58, 59, 65]);
+const removedProductIds = new Set([2, 8, 35, 47, 49, 54, 58, 59, 65, 81]);
 
 // Las capturas AREGLO 3, 4, 5, 8 y 12 confirman estos cuatro agotados.
 // Se fuerza el estado aquí para que siempre aparezcan en la sección Agotados,
