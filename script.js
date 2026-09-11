@@ -1,4 +1,4 @@
-import { products } from "./products.js?v=20260910-3";
+import { products } from "./products.js?v=20260910-4";
 
 const currencyFormatter = new Intl.NumberFormat("es-PE", {
   minimumFractionDigits: 0,
@@ -63,6 +63,7 @@ const catalogSection = document.querySelector("#catalogo");
 const soldOutSection = document.querySelector("#soldOutSection");
 const soldOutGrid = document.querySelector("#soldOutGrid");
 const soldOutTotal = document.querySelector("#soldOutTotal");
+const soldOutQuickCount = document.querySelector("#soldOutQuickCount");
 const searchInput = document.querySelector("#catalogSearch");
 const headerSearch = document.querySelector("#headerSearch");
 const catalogHeading = document.querySelector(".shop-heading");
@@ -269,6 +270,7 @@ function availabilityLabel(product) {
 function matchesProductFilter(product) {
   return state.filter === "todos"
     || (state.filter === "ofertas" && hasProductSale(product))
+    || (state.filter === "agotados" && isProductSoldOut(product))
     || product.category === state.filter
     || product.subCategory === state.filter;
 }
@@ -392,29 +394,36 @@ function renderProductCard(product, index) {
 
 function renderProducts() {
   const visibleProducts = filteredProducts();
+  const showingSoldOutOnly = state.filter === "agotados";
   const availableProducts = visibleProducts.filter(product => !isProductSoldOut(product));
   const soldOutProducts = visibleProducts.filter(isProductSoldOut);
+  const displayedProducts = showingSoldOutOnly ? soldOutProducts : availableProducts;
   const availableLabel = availableProducts.length === 1 ? "disponible" : "disponibles";
   const soldOutLabel = soldOutProducts.length === 1 ? "referencia agotada" : "referencias agotadas";
 
-  productTotal.textContent = `${availableProducts.length} ${availableLabel}`;
+  productTotal.textContent = showingSoldOutOnly
+    ? `${soldOutProducts.length} ${soldOutLabel}`
+    : `${availableProducts.length} ${availableLabel}`;
+  if (soldOutQuickCount) soldOutQuickCount.textContent = String(catalog.filter(isProductSoldOut).length);
   if (catalogSummaryText) {
     const filterButton = document.querySelector(`.filter-button[data-filter="${state.filter}"]`);
     const filterLabel = filterButton?.textContent.trim();
     catalogSummaryText.textContent = state.search.trim()
-      ? `${availableProducts.length} resultado${availableProducts.length === 1 ? "" : "s"} para “${state.search.trim()}”`
-      : state.filter === "todos"
+      ? `${displayedProducts.length} resultado${displayedProducts.length === 1 ? "" : "s"} para “${state.search.trim()}”`
+      : state.filter === "agotados"
+        ? `${filterLabel || "Agotados"} · ${soldOutProducts.length} referencia${soldOutProducts.length === 1 ? "" : "s"}`
+        : state.filter === "todos"
         ? "Ofertas y stock disponible primero"
         : `${filterLabel || "Catálogo"} · ${availableProducts.length} disponible${availableProducts.length === 1 ? "" : "s"}`;
   }
-  productGrid.innerHTML = availableProducts.length
-    ? availableProducts.map(renderProductCard).join("")
+  productGrid.innerHTML = displayedProducts.length
+    ? displayedProducts.map(renderProductCard).join("")
     : '<p class="no-results">No encontramos una pieza disponible con esa búsqueda.</p>';
 
   if (soldOutSection && soldOutGrid && soldOutTotal) {
-    soldOutSection.hidden = soldOutProducts.length === 0;
+    soldOutSection.hidden = showingSoldOutOnly || soldOutProducts.length === 0;
     soldOutTotal.textContent = `${soldOutProducts.length} ${soldOutLabel}`;
-    soldOutGrid.innerHTML = soldOutProducts.map(renderProductCard).join("");
+    soldOutGrid.innerHTML = showingSoldOutOnly ? "" : soldOutProducts.map(renderProductCard).join("");
   }
 }
 

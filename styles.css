@@ -195,6 +195,9 @@ button:disabled { cursor: not-allowed; opacity: .45; }
 .search-box input { background: transparent; border: 0; color: var(--ink); font-size: 11px; outline: none; width: 180px; }
 .search-box input::placeholder { color: var(--muted); }
 .catalog-active-summary { align-items: center; color: var(--accent-dark); display: flex; font-size: 9px; font-weight: 800; gap: 9px; letter-spacing: .1em; padding-top: 25px; text-transform: uppercase; }
+.catalog-sold-out-action { padding-top: 13px; }
+.filter-button-sold-out { border-color: rgba(240,68,45,.35); color: var(--accent-dark); }
+.filter-button-sold-out span { font-family: var(--font-display); }
 .catalog-active-summary-mark { background: var(--accent); border-radius: 50%; box-shadow: 0 0 0 5px var(--accent-soft); height: 7px; width: 7px; }
 .catalog-active-summary > span:nth-child(2) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .catalog-active-summary-line { background: var(--line); flex: 1; height: 1px; }
