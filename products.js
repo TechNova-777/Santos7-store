@@ -1873,6 +1873,14 @@ const incomingProducts = [
 // muestran como stock activo hasta volver a confirmarlos.
 const removedProductIds = new Set([2, 8, 35, 47, 49, 54, 58, 59, 65]);
 
+// Las capturas AREGLO 3, 4, 5, 8 y 12 confirman estos cuatro agotados.
+// Se fuerza el estado aquí para que siempre aparezcan en la sección Agotados,
+// aunque una ficha antigua conserve precio o disponibilidad anterior.
+const confirmedSoldOutProductIds = new Set([7, 9, 10, 12]);
+
 export const products = [...latestProducts, ...incomingProducts, ...existingProducts, ...newSneakers, ...consultableProducts]
+  .map((product) => confirmedSoldOutProductIds.has(product.id)
+    ? { ...product, stock: 0, stockBySize: null, availability: "out_of_stock" }
+    : product)
   .filter((product) => !removedProductIds.has(product.id))
   .filter((product) => (Array.isArray(product.images) && product.images.length > 0) || Boolean(product.image));

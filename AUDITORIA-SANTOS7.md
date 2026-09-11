@@ -8,6 +8,7 @@
 - Stock por talla comprobado en las referencias con desglose; las nuevas prendas sin cantidad exacta mantienen esa información pendiente.
 - Tallas confirmadas de calzado: **normalizadas a EUR**.
 - Se conservaron los archivos nuevos; se retiraron del catálogo las referencias sin imagen y las referencias repetidas o incorrectas confirmadas en la grabación.
+- Las capturas nuevas `AREGLO 3`, `AREGLO 4`, `AREGLO 5`, `AREGLO 8` y `AREGLO 12` confirman como **agotadas** las referencias Nike Ebernon Low (ID 12), Puma Ferrari CA Match (ID 7), Nike Air Max SC (ID 10) y Camisero Puma BMW (ID 9). El catálogo fuerza esas cuatro referencias a la sección **Agotados**.
 
 ## Correcciones aplicadas
 
