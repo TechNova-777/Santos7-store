@@ -1,4 +1,4 @@
-import { products } from "./products.js?v=20260910-4";
+import { products } from "./products.js?v=20260910-5";
 
 const currencyFormatter = new Intl.NumberFormat("es-PE", {
   minimumFractionDigits: 0,
@@ -48,10 +48,12 @@ function normalizeProduct(product) {
 }
 
 const catalog = products.map(normalizeProduct);
-const initialSearch = new URLSearchParams(window.location.search).get("q") || "";
+const initialUrlParams = new URLSearchParams(window.location.search);
+const initialSearch = initialUrlParams.get("q") || "";
+const initialFilter = initialUrlParams.get("filter") === "agotados" ? "agotados" : "todos";
 
 const state = {
-  filter: "todos",
+  filter: initialFilter,
   search: initialSearch,
   cart: loadCart(),
   favorites: new Set()
@@ -831,6 +833,10 @@ document.querySelectorAll("[data-filter]").forEach(button => {
   button.setAttribute("aria-pressed", String(button.classList.contains("is-active")));
   button.addEventListener("click", () => {
     state.filter = button.dataset.filter;
+    const url = new URL(window.location.href);
+    if (state.filter === "todos") url.searchParams.delete("filter");
+    else url.searchParams.set("filter", state.filter);
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
     updateFilterButtons(state.filter);
     renderProducts();
     document.querySelector("#catalogo").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1028,5 +1034,6 @@ function setupCampaignVideo() {
 
 setupCampaignVideo();
 syncStructuredData();
+updateFilterButtons(state.filter);
 renderProducts();
 renderCart();
