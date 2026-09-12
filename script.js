@@ -213,7 +213,7 @@ function formatDiscount(product) {
 function formatReferenceLabel(product) {
   if (product.referenceLabel) return product.referenceLabel;
   if (product.referenceType === "official") return "Precio oficial";
-  if (product.referenceType === "retail") return "Precio retail";
+  if (product.referenceType === "retail") return "Precio referencial";
   if (product.referenceType === "market-reference") return "Precio referencial";
   return "";
 }
@@ -322,6 +322,9 @@ function hasProductSale(product) {
 }
 
 function sortCatalogProducts(first, second) {
+  const soldOutDifference = Number(isProductSoldOut(first)) - Number(isProductSoldOut(second));
+  if (soldOutDifference) return soldOutDifference;
+
   const saleDifference = Number(hasProductSale(second)) - Number(hasProductSale(first));
   if (saleDifference) return saleDifference;
 
