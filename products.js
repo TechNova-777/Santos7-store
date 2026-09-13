@@ -2002,6 +2002,21 @@ const removedProductIds = new Set([2, 8, 35, 38, 47, 49, 54, 58, 59, 65]);
 // aunque una ficha antigua conserve precio o disponibilidad anterior.
 const confirmedSoldOutProductIds = new Set([7, 9, 10, 12, 36, 81]);
 
+// Estos productos ya tienen talla registrada en el catálogo, por lo que se
+// muestran como disponibles. La talla única cuenta como talla confirmada.
+const confirmedAvailableProductIds = new Set([48, 52, 53, 56, 57, 60, 61, 62, 72]);
+const confirmedAvailableNotes = {
+  48: "Tallas EUR 42 y 43 registradas · disponible · verificar nota de talla EUR 39",
+  52: "Tallas EUR 40.5 y 42 · disponible",
+  53: "Tallas EUR 43, 44.5 y 46 · disponible",
+  56: "Pack de 2 · talla M · disponible",
+  57: "Talla M/L · disponible",
+  60: "Talla única · disponible",
+  61: "Talla única · disponible",
+  62: "Talla única · disponible",
+  72: "Tallas M, L y XL · disponible"
+};
+
 // Nombres y marcas revisados a partir de las fotografías del catálogo.
 // Cuando la imagen no muestra un código de producto, se usa un nombre
 // descriptivo para no afirmar un modelo exacto sin confirmación.
@@ -2050,6 +2065,9 @@ const identifiedProductDetails = {
 export const products = [...latestProducts, ...incomingProducts, ...existingProducts, ...newSneakers, ...consultableProducts]
   .map((product) => confirmedSoldOutProductIds.has(product.id)
     ? { ...product, stock: 0, stockBySize: null, availability: "out_of_stock" }
+    : product)
+  .map((product) => confirmedAvailableProductIds.has(product.id)
+    ? { ...product, availability: "in_stock", note: confirmedAvailableNotes[product.id] || product.note }
     : product)
   .map((product) => ({ ...product, ...(identifiedProductDetails[product.id] || {}) }))
   .filter((product) => !removedProductIds.has(product.id))
