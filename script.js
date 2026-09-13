@@ -1,4 +1,4 @@
-import { products } from "./products.js?v=20260911-13";
+import { products } from "./products.js?v=20260913-14";
 
 const currencyFormatter = new Intl.NumberFormat("es-PE", {
   minimumFractionDigits: 0,
@@ -260,10 +260,13 @@ function sizeLabel(product, size) {
 }
 
 function availableUnits(product, size) {
+  if (product.availability === "out_of_stock" || product.stock === 0) return 0;
   if (product.stockBySize && size && Number.isFinite(product.stockBySize[size])) {
     return product.stockBySize[size];
   }
-  return Number.isFinite(product.stock) ? product.stock : Infinity;
+  // Si el inventario aún no está confirmado, permitimos una sola unidad
+  // para evitar que la cantidad crezca sin límite en la consulta.
+  return Number.isFinite(product.stock) ? Math.max(0, product.stock) : 1;
 }
 
 function availabilityLabel(product) {
@@ -271,7 +274,9 @@ function availabilityLabel(product) {
   if (Number.isFinite(product.stock)) {
     return `${product.stock} ${product.stock === 1 ? "unidad" : "unidades"} disponibles`;
   }
-  return product.availability === "inquiry" ? "Disponibilidad por confirmar" : "";
+  return product.availability === "inquiry"
+    ? "Disponibilidad por confirmar · máximo 1 por consulta"
+    : "Disponible · cantidad por confirmar";
 }
 
 function matchesProductFilter(product) {

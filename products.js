@@ -1982,7 +1982,7 @@ const incomingProducts = [
     saleLabel: "Oferta Santos7",
     priceKind: "store",
     availability: "inquiry",
-    images: ["ZAPA.jpeg", "ZAPA2.jpeg"],
+    images: ["ZAPA.jpeg"],
     image: "ZAPA.jpeg",
     imageFit: "contain",
     tag: "Box cortado",
