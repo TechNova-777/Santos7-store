@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://santos7store.vercel.app/sitemap.xml
-Sitemap: https://santos7store.vercel.app/sitemap.txt
+Sitemap: https://santos7store.web.app/sitemap.xml
+Sitemap: https://santos7store.web.app/sitemap.txt

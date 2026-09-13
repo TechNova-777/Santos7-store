@@ -1,0 +1,18 @@
+{
+  "hosting": {
+    "site": "santos7store",
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      ".firebase/**",
+      "firebase-debug.log",
+      ".git/**",
+      ".continue/**",
+      ".kombai/**",
+      ".github/**",
+      "santos store.mp4",
+      "Grabación de pantalla *.mp4"
+    ]
+  }
+}

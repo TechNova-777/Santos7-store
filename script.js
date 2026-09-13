@@ -456,7 +456,7 @@ function renderProducts() {
 function syncStructuredData() {
   if (!catalogStructuredData) return;
 
-  const siteUrl = "https://santos7store.vercel.app";
+  const siteUrl = "https://santos7store.web.app";
   const itemListElement = catalog
     .filter(product => !isProductSoldOut(product) && product.images.length)
     .map((product, index) => {
