@@ -2004,7 +2004,7 @@ const confirmedSoldOutProductIds = new Set([7, 9, 10, 12, 36, 81]);
 
 // Estos productos ya tienen talla registrada en el catálogo, por lo que se
 // muestran como disponibles. La talla única cuenta como talla confirmada.
-const confirmedAvailableProductIds = new Set([48, 50, 51, 52, 53, 55, 56, 57, 60, 61, 62, 64, 72, 85]);
+const confirmedAvailableProductIds = new Set([48, 50, 51, 52, 53, 55, 56, 57, 60, 61, 62, 64, 66, 72, 85]);
 const confirmedAvailableNotes = {
   48: "Tallas EUR 42 y 43 registradas · disponible · verificar nota de talla EUR 39",
   52: "Tallas EUR 40.5 y 42 · disponible",
