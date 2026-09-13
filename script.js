@@ -1,4 +1,4 @@
-import { products } from "./products.js?v=20260913-15";
+import { products } from "./products.js?v=20260913-16";
 
 const currencyFormatter = new Intl.NumberFormat("es-PE", {
   minimumFractionDigits: 0,
@@ -276,7 +276,7 @@ function availabilityLabel(product) {
   }
   return product.availability === "inquiry"
     ? "Disponibilidad por confirmar · máximo 1 por consulta"
-    : "Disponible · cantidad por confirmar";
+    : "Disponible";
 }
 
 function matchesProductFilter(product) {
