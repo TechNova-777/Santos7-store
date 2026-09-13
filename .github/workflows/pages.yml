@@ -1,4 +1,4 @@
-name: Publicar Santos Store en Firebase
+name: Publicar Santos Store en Firebase y GitHub Pages
 
 on:
   push:
@@ -7,13 +7,15 @@ on:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 concurrency:
-  group: firebase-hosting
+  group: santos-store-deploy
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  deploy-firebase:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,3 +27,26 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SANTOS7STORE }}'
           projectId: santos7store
           channelId: live
+
+  build-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Preparar sitio de GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy-pages:
+    needs: build-pages
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
