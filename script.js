@@ -1,4 +1,4 @@
-import { products } from "./products.js?v=20260913-19";
+import { products } from "./products.js?v=20260913-20";
 
 const currencyFormatter = new Intl.NumberFormat("es-PE", {
   minimumFractionDigits: 0,
@@ -50,6 +50,7 @@ function normalizeProduct(product) {
 const catalog = products.map(normalizeProduct);
 const initialUrlParams = new URLSearchParams(window.location.search);
 const initialSearch = initialUrlParams.get("q") || "";
+const initialProductId = Number.parseInt(initialUrlParams.get("producto"), 10);
 const validCatalogFilters = new Set([
   "todos", "ofertas", "agotados", "calzado", "zapatillas", "sandalias",
   "ropa", "polos", "shorts", "accesorios", "gorras", "mochilas"
@@ -465,8 +466,8 @@ function syncStructuredData() {
   const itemListElement = catalog
     .filter(product => !isProductSoldOut(product) && product.images.length)
     .map((product, index) => {
-      const productPageUrl = `${siteUrl}/?q=${encodeURIComponent(product.name)}`;
-      const productUrl = `${productPageUrl}#catalogo`;
+      const productPageUrl = `${siteUrl}/?producto=${product.id}`;
+      const productUrl = productPageUrl;
       const item = {
         "@type": "Product",
         "@id": `${productPageUrl}#product-${product.id}`,
@@ -1075,3 +1076,13 @@ syncStructuredData();
 updateFilterButtons(state.filter);
 renderProducts();
 renderCart();
+
+if (Number.isInteger(initialProductId)) {
+  const initialProduct = getProduct(initialProductId);
+  if (initialProduct) {
+    document.title = `${initialProduct.name} | Santos7 Store`;
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.href = `${window.location.origin}/?producto=${initialProduct.id}`;
+    requestAnimationFrame(() => openProduct(initialProduct.id));
+  }
+}

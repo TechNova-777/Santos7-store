@@ -2000,7 +2000,10 @@ const removedProductIds = new Set([2, 8, 35, 38, 47, 49, 54, 58, 59, 65]);
 // Las capturas AREGLO 3, 4, 5 y 12 confirman estas seis referencias agotadas.
 // Se fuerza el estado aquí para que siempre aparezcan en la sección Agotados,
 // aunque una ficha antigua conserve precio o disponibilidad anterior.
-const confirmedSoldOutProductIds = new Set([7, 9, 10, 12, 36, 81]);
+const confirmedSoldOutProductIds = new Set([7, 9, 10, 12, 36, 63, 81]);
+const confirmedSoldOutNotes = {
+  63: "Agotado · talla S"
+};
 
 // Estos productos ya tienen talla registrada en el catálogo, por lo que se
 // muestran como disponibles. La talla única cuenta como talla confirmada.
@@ -2082,12 +2085,16 @@ const identifiedProductDetails = {
 
 export const products = [...latestProducts, ...incomingProducts, ...existingProducts, ...newSneakers, ...consultableProducts]
   .map((product) => confirmedSoldOutProductIds.has(product.id)
-    ? { ...product, stock: 0, stockBySize: null, availability: "out_of_stock" }
+    ? { ...product, stock: 0, stockBySize: null, availability: "out_of_stock", note: confirmedSoldOutNotes[product.id] || product.note }
     : product)
   .map((product) => confirmedAvailableProductIds.has(product.id)
     ? { ...product, availability: "in_stock", note: confirmedAvailableNotes[product.id] || confirmedAvailableNoteOverrides[product.id] || product.note }
     : product)
   .map((product) => ({ ...product, ...(identifiedProductDetails[product.id] || {}) }))
   .map((product) => ({ ...product, ...(confirmedSizeDetails[product.id] || {}) }))
+  .map((product) => ({
+    ...product,
+    availability: product.availability || (Number.isFinite(product.price) ? "in_stock" : "inquiry")
+  }))
   .filter((product) => !removedProductIds.has(product.id))
   .filter((product) => (Array.isArray(product.images) && product.images.length > 0) || Boolean(product.image));
