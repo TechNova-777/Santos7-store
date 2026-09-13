@@ -1,4 +1,4 @@
-import { products } from "./products.js?v=20260913-17";
+import { products } from "./products.js?v=20260913-18";
 
 const currencyFormatter = new Intl.NumberFormat("es-PE", {
   minimumFractionDigits: 0,

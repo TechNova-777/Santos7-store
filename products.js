@@ -2004,7 +2004,7 @@ const confirmedSoldOutProductIds = new Set([7, 9, 10, 12, 36, 81]);
 
 // Estos productos ya tienen talla registrada en el catálogo, por lo que se
 // muestran como disponibles. La talla única cuenta como talla confirmada.
-const confirmedAvailableProductIds = new Set([48, 52, 53, 56, 57, 60, 61, 62, 72]);
+const confirmedAvailableProductIds = new Set([48, 50, 51, 52, 53, 55, 56, 57, 60, 61, 62, 64, 72, 85]);
 const confirmedAvailableNotes = {
   48: "Tallas EUR 42 y 43 registradas · disponible · verificar nota de talla EUR 39",
   52: "Tallas EUR 40.5 y 42 · disponible",
@@ -2020,6 +2020,24 @@ const confirmedAvailableNotes = {
 // Nombres y marcas revisados a partir de las fotografías del catálogo.
 // Cuando la imagen no muestra un código de producto, se usa un nombre
 // descriptivo para no afirmar un modelo exacto sin confirmación.
+const confirmedAvailableNoteOverrides = {
+  50: "Talla EUR 39.5 - disponible",
+  51: "Talla EUR 40 - disponible",
+  55: "Talla M - pack de 3 - disponible",
+  64: "Capacidad 25 litros - disponible",
+  66: "Talla EUR 45 - 1 unidad - disponible",
+  85: "Talla EUR 39 - box cortado - disponible"
+};
+
+const confirmedSizeDetails = {
+  50: { sizeSystem: "EUR", sizes: ["39.5"], details: "Talla EUR 39.5" },
+  51: { sizeSystem: "EUR", sizes: ["40"], details: "Talla EUR 40" },
+  55: { sizes: ["M"], details: "Talla M - pack de 3" },
+  64: { sizes: [], details: "Capacidad 25 litros" },
+  66: { sizeSystem: "EUR", sizes: ["45"], details: "Talla EUR 45" },
+  85: { sizeSystem: "EUR", sizes: ["39"], details: "Talla EUR 39 - box cortado" }
+};
+
 const identifiedProductDetails = {
   1: { name: "Kappa Logo Slide", brand: "Kappa", model: "Logo Slide", subCategory: "sandalias", categoryLabel: "Sandalias · Kappa" },
   3: { name: "PUMA BMW Motorsport Cap", brand: "Puma", model: "BMW Motorsport Cap", subCategory: "gorras", categoryLabel: "Gorras · PUMA BMW Motorsport" },
@@ -2067,8 +2085,9 @@ export const products = [...latestProducts, ...incomingProducts, ...existingProd
     ? { ...product, stock: 0, stockBySize: null, availability: "out_of_stock" }
     : product)
   .map((product) => confirmedAvailableProductIds.has(product.id)
-    ? { ...product, availability: "in_stock", note: confirmedAvailableNotes[product.id] || product.note }
+    ? { ...product, availability: "in_stock", note: confirmedAvailableNotes[product.id] || confirmedAvailableNoteOverrides[product.id] || product.note }
     : product)
   .map((product) => ({ ...product, ...(identifiedProductDetails[product.id] || {}) }))
+  .map((product) => ({ ...product, ...(confirmedSizeDetails[product.id] || {}) }))
   .filter((product) => !removedProductIds.has(product.id))
   .filter((product) => (Array.isArray(product.images) && product.images.length > 0) || Boolean(product.image));
