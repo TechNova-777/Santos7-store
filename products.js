@@ -2002,9 +2002,55 @@ const removedProductIds = new Set([2, 8, 35, 38, 47, 49, 54, 58, 59, 65]);
 // aunque una ficha antigua conserve precio o disponibilidad anterior.
 const confirmedSoldOutProductIds = new Set([7, 9, 10, 12, 36, 81]);
 
+// Nombres y marcas revisados a partir de las fotografías del catálogo.
+// Cuando la imagen no muestra un código de producto, se usa un nombre
+// descriptivo para no afirmar un modelo exacto sin confirmación.
+const identifiedProductDetails = {
+  1: { name: "Kappa Logo Slide", brand: "Kappa", model: "Logo Slide", subCategory: "sandalias", categoryLabel: "Sandalias · Kappa" },
+  3: { name: "PUMA BMW Motorsport Cap", brand: "Puma", model: "BMW Motorsport Cap", subCategory: "gorras", categoryLabel: "Gorras · PUMA BMW Motorsport" },
+  4: { name: "GUESS 4G Logo Cap", brand: "GUESS", model: "4G Logo Cap", subCategory: "gorras", categoryLabel: "Gorras · GUESS" },
+  5: { name: "Nike Sportswear Club Cotton Tee", brand: "Nike", model: "Sportswear Club Cotton Tee", categoryLabel: "Polos · Nike" },
+  6: { name: "Puma Suede XL", brand: "Puma", model: "Suede XL", subCategory: "zapatillas", categoryLabel: "Zapatillas · Puma" },
+  7: { name: "PUMA x Scuderia Ferrari CA Match", brand: "Puma", model: "CA Match", subCategory: "zapatillas", categoryLabel: "Zapatillas · PUMA Ferrari" },
+  9: { name: "Puma BMW Motorsport Polo", brand: "Puma", model: "BMW Motorsport Polo", subCategory: "polos", categoryLabel: "Polos · PUMA BMW Motorsport" },
+  10: { name: "Nike Air Max SC", brand: "Nike", model: "Air Max SC", subCategory: "zapatillas", categoryLabel: "Zapatillas · Nike" },
+  11: { name: "Nike Victori One Slide", brand: "Nike", model: "Victori One Slide", subCategory: "sandalias", categoryLabel: "Sandalias · Nike" },
+  12: { name: "Nike Ebernon Low", brand: "Nike", model: "Ebernon Low", subCategory: "zapatillas", categoryLabel: "Zapatillas · Nike" },
+  13: { name: "GUESS Triangle Logo Tee", brand: "GUESS", model: "Triangle Logo Tee", subCategory: "polos", categoryLabel: "Polos · GUESS" },
+  14: { name: "GUESS 4G Logo Tote Bag", brand: "GUESS", model: "4G Logo Tote Bag", subCategory: "otros", categoryLabel: "Carteras · GUESS" },
+  15: { name: "Calvin Klein Jeans Eons Slide", brand: "Calvin Klein", model: "Jeans Eons Slide", subCategory: "sandalias", categoryLabel: "Sandalias · Calvin Klein" },
+  16: { name: "Puma Graphic Hoodie", brand: "Puma", model: "Graphic Hoodie", subCategory: "poleras", categoryLabel: "Poleras · Puma" },
+  17: { name: "Tommy Hilfiger Flag Logo T-Shirt", brand: "Tommy Hilfiger", model: "Flag Logo T-Shirt", subCategory: "polos", categoryLabel: "Polos · Tommy Hilfiger" },
+  18: { name: "Nike Kobe Offcourt Slide", brand: "Nike", model: "Kobe Offcourt Slide", subCategory: "sandalias", categoryLabel: "Sandalias · Nike Kobe" },
+  19: { name: "Puma Logo Slide", brand: "Puma", model: "Logo Slide", subCategory: "sandalias", categoryLabel: "Sandalias · Puma" },
+  20: { name: "Nike The Nike Tee", brand: "Nike", model: "The Nike Tee", subCategory: "polos", categoryLabel: "Polos · Nike" },
+  21: { name: "Puma Camo Graphic Tee", brand: "Puma", model: "Camo Graphic Tee", subCategory: "polos", categoryLabel: "Polos · Puma" },
+  22: { name: "Nike Swoosh Slide Azul", brand: "Nike", model: "Swoosh Slide", subCategory: "sandalias", categoryLabel: "Sandalias · Nike" },
+  23: { name: "Nike Air Max Dn Blanco", brand: "Nike", model: "Air Max Dn", subCategory: "zapatillas", categoryLabel: "Zapatillas · Nike" },
+  24: { name: "Nike Air Max Blanco/Rojo", brand: "Nike", model: "Air Max", subCategory: "zapatillas", categoryLabel: "Zapatillas · Nike" },
+  25: { name: "Nike Club Cap", brand: "Nike", model: "Club Cap", subCategory: "gorras", categoryLabel: "Gorras · Nike" },
+  26: { name: "Nike Victori One Shower Slide", brand: "Nike", model: "Victori One Shower Slide", subCategory: "sandalias", categoryLabel: "Sandalias · Nike" },
+  27: { name: "Nike Sabrina Ionescu Basketball Tee", brand: "Nike", model: "Sabrina Ionescu Basketball Tee", subCategory: "polos", categoryLabel: "Polos · Nike Sabrina" },
+  28: { name: "Calvin Klein Monogram Logo T-Shirt", brand: "Calvin Klein", model: "Monogram Logo T-Shirt", subCategory: "polos", categoryLabel: "Polos · Calvin Klein" },
+  48: { name: "Adidas Adilette Aqua Slide", brand: "Adidas", model: "Adilette Aqua", subCategory: "sandalias", categoryLabel: "Sandalias · Adidas" },
+  50: { name: "Fila Drifter Basic Slide Negro/Blanco", brand: "Fila", model: "Drifter Basic", subCategory: "sandalias", categoryLabel: "Sandalias · Fila" },
+  51: { name: "Nike Air Max Dn", brand: "Nike", model: "Air Max Dn", subCategory: "zapatillas", categoryLabel: "Zapatillas · Nike" },
+  52: { name: "Puma Leadcat 2.0 Slide", brand: "Puma", model: "Leadcat 2.0", subCategory: "sandalias", categoryLabel: "Sandalias · Puma" },
+  53: { name: "Fila Drifter Basic Slide Negro/Rojo", brand: "Fila", model: "Drifter Basic", subCategory: "sandalias", categoryLabel: "Sandalias · Fila" },
+  55: { name: "New Balance Essentials T-Shirt Pack x3", brand: "New Balance", model: "Essentials T-Shirt Pack x3", subCategory: "polos", categoryLabel: "Polos · New Balance" },
+  56: { name: "Jordan Flight Modal Pack x2", brand: "Jordan", model: "Flight Modal Pack x2", subCategory: "polos", categoryLabel: "Ropa interior · Jordan" },
+  57: { name: "Nike Club Cap Gris", brand: "Nike", model: "Club Cap", subCategory: "gorras", categoryLabel: "Gorras · Nike" },
+  60: { name: "GUESS Triangle Logo Trucker Cap", brand: "GUESS", model: "Triangle Logo Trucker Cap", subCategory: "gorras", categoryLabel: "Gorras · GUESS" },
+  61: { name: "Nike Club Cap Blanca", brand: "Nike", model: "Club Cap", subCategory: "gorras", categoryLabel: "Gorras · Nike" },
+  62: { name: "Tommy Hilfiger Flag Trucker Cap", brand: "Tommy Hilfiger", model: "Flag Trucker Cap", subCategory: "gorras", categoryLabel: "Gorras · Tommy Hilfiger" },
+  63: { name: "Puma F1 Graphic Tee", brand: "Puma", model: "F1 Graphic Tee", subCategory: "polos", categoryLabel: "Polos · Puma F1" },
+  64: { name: "Nike Kobe · FC Barcelona Backpack", brand: "Nike", model: "Kobe · FC Barcelona Backpack", subCategory: "mochilas", categoryLabel: "Mochilas · Nike Kobe" }
+};
+
 export const products = [...latestProducts, ...incomingProducts, ...existingProducts, ...newSneakers, ...consultableProducts]
   .map((product) => confirmedSoldOutProductIds.has(product.id)
     ? { ...product, stock: 0, stockBySize: null, availability: "out_of_stock" }
     : product)
+  .map((product) => ({ ...product, ...(identifiedProductDetails[product.id] || {}) }))
   .filter((product) => !removedProductIds.has(product.id))
   .filter((product) => (Array.isArray(product.images) && product.images.length > 0) || Boolean(product.image));
