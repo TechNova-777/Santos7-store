@@ -460,9 +460,14 @@ function syncStructuredData() {
   const itemListElement = catalog
     .filter(product => !isProductSoldOut(product) && product.images.length)
     .map((product, index) => {
+      const productPageUrl = `${siteUrl}/?q=${encodeURIComponent(product.name)}`;
+      const productUrl = `${productPageUrl}#catalogo`;
       const item = {
         "@type": "Product",
+        "@id": `${productPageUrl}#product-${product.id}`,
+        url: productUrl,
         name: product.name,
+        category: product.categoryLabel,
         image: product.images.map(image => `${siteUrl}/${productImagePath(image)}`),
         description: [product.categoryLabel, product.details, product.note].filter(Boolean).join(" · ")
       };
@@ -471,7 +476,7 @@ function syncStructuredData() {
       if (Number.isFinite(product.price)) {
         item.offers = {
           "@type": "Offer",
-          url: `${siteUrl}/?q=${encodeURIComponent(product.name)}#catalogo`,
+          url: productUrl,
           priceCurrency: "PEN",
           price: product.price,
           availability: "https://schema.org/InStock",
@@ -485,7 +490,8 @@ function syncStructuredData() {
   catalogStructuredData.textContent = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Catálogo de zapatillas, ropa y accesorios Santos7 Store",
+    name: "Productos Santos7 Store",
+    description: "Zapatillas Nike, Jordan, Puma y más disponibles en Santos7 Store, Lima.",
     numberOfItems: itemListElement.length,
     itemListElement
   });
